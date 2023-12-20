@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
-    namespace = "su.cus.anonce"
+    namespace = "su.cus.announce"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "su.cus.anonce"
+        applicationId = "su.cus.announce"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -48,10 +49,17 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    buildToolsVersion = "34.0.0"
+    ndkVersion = "26.1.10909125"
 }
 
 dependencies {
 
+
+    implementation(libs.g.jetbrains.kotlinx)
+    implementation(libs.androidx.retrofit)
+    implementation(libs.androidx.converter.gson)
+    implementation(libs.androidx.recycler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -60,6 +68,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

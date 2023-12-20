@@ -1,7 +1,8 @@
-package su.cus.anonce.API
+package su.cus.announce.API
 
-import su.cus.anonce.API.MoviesRepository.ItemMoviesList
-
+import kotlinx.serialization.Serializable
+import su.cus.announce.API.MoviesRepository.ItemMoviesList
+@Serializable
 data class MoviesPremiere(
     val items: List<ItemMoviesList>,
     val total: Int

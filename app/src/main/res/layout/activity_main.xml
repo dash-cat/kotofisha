@@ -41,7 +41,7 @@
         android:layout_marginStart="72dp"
         android:layout_marginEnd="69dp"
         android:layout_marginBottom="33dp"
-        android:background="@android:color/background_dark"
+        android:background="@drawable/rounded_button"
         android:text="@string/go_to_come"
         android:textColor="@color/white"
         android:textSize="16sp" />

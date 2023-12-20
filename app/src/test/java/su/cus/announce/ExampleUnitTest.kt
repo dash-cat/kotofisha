@@ -1,4 +1,4 @@
-package su.cus.anonce
+package su.cus.announce
 
 import org.junit.Test
 

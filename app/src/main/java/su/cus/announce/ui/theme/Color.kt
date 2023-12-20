@@ -1,4 +1,4 @@
-package su.cus.anonce.ui.theme
+package su.cus.announce.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -34,9 +34,9 @@ class PremiereList : ComponentActivity() {
 
 
         recyclerView = findViewById(R.id.recyclerView)
-        val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
 
+        recyclerView.layoutManager  = LinearLayoutManager(this)
+//        recyclerView.adapter = PremiereListAdapter(emptyList())
         this.loadMovies()
     }
     private fun loadMovies() {
@@ -68,6 +68,7 @@ class PremiereList : ComponentActivity() {
         } else {
             // Parse cached data and use it
             val moviesList = Json.decodeFromString<List<ItemMoviesList>>(cachedData)
+
             recyclerView.adapter = PremiereListAdapter(moviesList)
 
         }

@@ -1,5 +1,6 @@
 package su.cus.announce.premiere
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -12,15 +13,16 @@ import kotlinx.serialization.json.Json
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import su.cus.announce.API.MoviesPremiere
 import su.cus.announce.API.MoviesRepository.ItemMoviesList
+import su.cus.announce.API.MoviesRepository.MoviesPremiere
 import su.cus.announce.API.RetrofitClient
 import su.cus.announce.DataCache
+import su.cus.announce.DescriptionActivity.DescriptionActivity
 import su.cus.announce.R
 import su.cus.announce.databinding.ListPremiereBinding
 
 
-class PremiereList : ComponentActivity() {
+class PremiereList : ComponentActivity(), OnItemsClickListener {
 
 //    private lateinit var apiService: MoviesApiService
     private lateinit var binding: ListPremiereBinding
@@ -36,9 +38,12 @@ class PremiereList : ComponentActivity() {
         recyclerView = findViewById(R.id.recyclerView)
 
         recyclerView.layoutManager  = LinearLayoutManager(this)
-//        recyclerView.adapter = PremiereListAdapter(emptyList())
+//        recyclerView.adapter = PremiereListAdapter()
         this.loadMovies()
     }
+
+
+
     private fun loadMovies() {
         val filename = "movies.cache"
         val cachedData = cache.readFromCache(filename)
@@ -53,7 +58,7 @@ class PremiereList : ComponentActivity() {
                     if (response.isSuccessful) {
                         val moviesList = response.body()?.items ?: emptyList()
                         cache.writeToCache(filename, Json.encodeToString(moviesList))
-                        recyclerView.adapter = PremiereListAdapter(moviesList)
+                        recyclerView.adapter = PremiereListAdapter(moviesList, this@PremiereList)
                     } else {
                         val errorMessage = response.errorBody()?.string() ?: "Unknown error"
                         Toast.makeText(this@PremiereList, "Failed to load movies: $errorMessage", Toast.LENGTH_SHORT).show()
@@ -69,12 +74,20 @@ class PremiereList : ComponentActivity() {
             // Parse cached data and use it
             val moviesList = Json.decodeFromString<List<ItemMoviesList>>(cachedData)
 
-            recyclerView.adapter = PremiereListAdapter(moviesList)
+            recyclerView.adapter = PremiereListAdapter(moviesList, this)
 
         }
 
     }
 
+    override fun onItemsClick(movieId: String) {
+        // Обработка клика по элементу
+        // Например, запуск новой Activity с деталями фильма
+
+        val intent = Intent(this, DescriptionActivity::class.java)
+        intent.putExtra("MOVIE_ID", movieId)
+        startActivity(intent)
+    }
 
 
 }

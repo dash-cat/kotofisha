@@ -55,6 +55,9 @@ android {
 
 dependencies {
     implementation(libs.glide)
+    implementation(libs.material)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     annotationProcessor(libs.glideCompiler)
     implementation(libs.g.jetbrains.kotlinx)
     implementation(libs.androidx.retrofit)

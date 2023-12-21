@@ -4,25 +4,26 @@
     android:id="@+id/templateRecycle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="0dp">
+    android:padding="4dp">
 
     <TextView
         android:id="@+id/text_title_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="01.01.2000"
+        android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/image_prev"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias="0.855" />
+        app:layout_constraintVertical_bias="0.88" />
 
     <View
         android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="422dp"
+        android:layout_height="111dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.17"
         app:layout_constraintHorizontal_bias="1.0"
@@ -33,32 +34,49 @@
         android:id="@+id/image_prev"
         android:layout_width="117dp"
         android:layout_height="113dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginBottom="-10dp"
         android:src="@drawable/cats"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.029"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
 
     <TextView
         android:id="@+id/text_title"
-        android:layout_width="113dp"
-        android:layout_height="31dp"
+        android:layout_width="107dp"
+        android:layout_height="18dp"
         android:text="Title"
+        android:textColor="#120000"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/text_title_date"
         app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.088"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/image_prev"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias="0.187" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/image_prev"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.304" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="130dp" />
+        app:layout_constraintGuide_begin="123dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

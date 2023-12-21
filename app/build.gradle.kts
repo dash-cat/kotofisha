@@ -54,8 +54,8 @@ android {
 }
 
 dependencies {
-
-
+    implementation(libs.glide)
+    annotationProcessor(libs.glideCompiler)
     implementation(libs.g.jetbrains.kotlinx)
     implementation(libs.androidx.retrofit)
     implementation(libs.androidx.converter.gson)

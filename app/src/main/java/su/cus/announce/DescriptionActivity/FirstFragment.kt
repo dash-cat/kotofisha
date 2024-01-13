@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.android.ext.android.inject
 import su.cus.announce.R
+import su.cus.announce.UserPresenterImpl
 import su.cus.announce.databinding.FragmentFirstBinding
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
+    private val presenter: UserPresenterImpl by inject()
 
     private var _binding: FragmentFirstBinding? = null
 

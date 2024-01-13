@@ -15,7 +15,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner =  "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -54,6 +54,11 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(libs.org.robolectric)
+    androidTestImplementation(libs.androidx.espresso.intents)
+    androidTestImplementation(libs.androidx.ext)
+    androidTestImplementation(libs.androidx.espresso)
+    implementation(libs.koin)
     implementation(libs.glide)
     implementation(libs.material)
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -75,7 +80,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)

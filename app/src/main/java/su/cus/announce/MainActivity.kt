@@ -3,34 +3,30 @@ package su.cus.announce
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import su.cus.announce.databinding.ActivityMainBinding
 import su.cus.announce.premiere.PremiereList
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-        val button: Button? = findViewById(R.id.welcome_button)
-        println("$button")
-        button?.setOnClickListener(){
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-            val intent = Intent(/* packageContext = */ this, /* cls = */ PremiereList::class.java)
-            println("$intent")
+        binding.welcomeButton.setOnClickListener {
+            val intent = Intent(this, PremiereList::class.java)
             startActivity(intent)
         }
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("MainActivity", "MainActivity is being destroyed")
+        _binding = null
+        Log.d("MainActivity", "MainActivity view is being destroyed")
     }
-
 }

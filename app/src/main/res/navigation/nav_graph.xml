@@ -30,4 +30,9 @@
         android:name="su.cus.announce.premiere.PremiereList"
         android:label="list_premiere"
         tools:layout="@layout/list_premiere" />
+    <activity
+        android:id="@+id/descriptionActivity"
+        android:name="su.cus.announce.DescriptionActivity.DescriptionActivity"
+        android:label="activity_description"
+        tools:layout="@layout/activity_description" />
 </navigation>

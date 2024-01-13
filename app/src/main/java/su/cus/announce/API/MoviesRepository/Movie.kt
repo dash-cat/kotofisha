@@ -3,7 +3,7 @@ package su.cus.announce.API.MoviesRepository
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ItemMoviesList(
+data class Movie(
     val countries: List<Country>,
     val duration: Int,
     val genres: List<Genre>,

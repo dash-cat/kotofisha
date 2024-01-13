@@ -2,93 +2,52 @@ package su.cus.announce.premiere
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import su.cus.announce.API.MoviesRepository.ItemMoviesList
-import su.cus.announce.API.MoviesRepository.MoviesPremiere
-import su.cus.announce.API.RetrofitClient
-import su.cus.announce.DataCache
+import org.koin.android.ext.android.inject
+import su.cus.announce.API.MoviesRepository.Movie
+import su.cus.announce.API.PremiereListPresenterInput
+import su.cus.announce.API.PremiereListPresenterOutput
 import su.cus.announce.DescriptionActivity.DescriptionActivity
-import su.cus.announce.R
 import su.cus.announce.databinding.ListPremiereBinding
 
 
-class PremiereList : ComponentActivity(), OnItemsClickListener {
+class PremiereList : ComponentActivity(), OnItemsClickListener, PremiereListPresenterOutput {
 
-//    private lateinit var apiService: MoviesApiService
+    private val input: PremiereListPresenterInput by inject()
     private lateinit var binding: ListPremiereBinding
-    lateinit var recyclerView: RecyclerView
-    val cache = DataCache(this)
+    private val recyclerView by lazy { binding.recyclerView }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ListPremiereBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
+        setupRecyclerView()
+        input.loadMovies()
+    }
 
-        recyclerView = findViewById(R.id.recyclerView)
-
-        recyclerView.layoutManager  = LinearLayoutManager(this)
-//        recyclerView.adapter = PremiereListAdapter()
-        this.loadMovies()
+    private fun setupRecyclerView() {
+        recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
 
-
-    private fun loadMovies() {
-        val filename = "movies.cache"
-        val cachedData = cache.readFromCache(filename)
-        if (cachedData == null) {
-            RetrofitClient.instance.getMovies(2023, "JANUARY").enqueue(object :
-                Callback<MoviesPremiere> {
-                override fun onResponse(
-                    call: Call<MoviesPremiere>,
-                    response: Response<MoviesPremiere>
-                ) {
-//                Log.d("response", "Response code: ${response.code()}")
-                    if (response.isSuccessful) {
-                        val moviesList = response.body()?.items ?: emptyList()
-                        cache.writeToCache(filename, Json.encodeToString(moviesList))
-                        recyclerView.adapter = PremiereListAdapter(moviesList, this@PremiereList)
-                    } else {
-                        val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                        Toast.makeText(this@PremiereList, "Failed to load movies: $errorMessage", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<MoviesPremiere>, t: Throwable) {
-                    Log.d("response", "Response code: $t")
-                    Toast.makeText(this@PremiereList, "Failed to load movies: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
-        } else {
-            // Parse cached data and use it
-            val moviesList = Json.decodeFromString<List<ItemMoviesList>>(cachedData)
-
-            recyclerView.adapter = PremiereListAdapter(moviesList, this)
-
-        }
-
+    override fun showMovies(moviesList: List<Movie>) {
+        recyclerView.adapter = PremiereListAdapter(moviesList, this@PremiereList)
     }
+
 
     override fun onItemsClick(movieId: String) {
-        // Обработка клика по элементу
-        // Например, запуск новой Activity с деталями фильма
-
         val intent = Intent(this, DescriptionActivity::class.java)
         intent.putExtra("MOVIE_ID", movieId)
         startActivity(intent)
     }
 
+    override fun showErrorMessage(errorMessage: String?) {
+        Toast.makeText(this, "Failed to load movies: $errorMessage", Toast.LENGTH_SHORT).show()
+    }
 
 }
 

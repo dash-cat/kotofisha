@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MoviesPremiere(
-    val items: List<ItemMoviesList>,
+    val items: List<Movie>,
     val total: Int
 )

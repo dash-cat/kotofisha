@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import su.cus.announce.API.MoviesRepository.ItemMoviesList
+import su.cus.announce.API.MoviesRepository.Movie
 import su.cus.announce.R
 
-class PremiereListAdapter(private val data: List<ItemMoviesList>, private val listener: PremiereList) : RecyclerView.Adapter<PremiereListAdapter.PremiereViewHolder>() {
+class PremiereListAdapter(private val data: List<Movie>, private val listener: PremiereList) : RecyclerView.Adapter<PremiereListAdapter.PremiereViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PremiereViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.template_program, parent, false)

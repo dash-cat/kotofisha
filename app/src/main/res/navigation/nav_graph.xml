@@ -3,7 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/titleScreen">
+
+
+
+    <fragment
+        android:id="@+id/titleScreen"
+        android:name="su.cus.announce.TitleScreen"
+        android:label="TitleScreen"
+        tools:layout="@layout/title_screen">
+        <action
+            android:id="@+id/action_to_titleScreen"
+            app:destination="@id/titleScreen" />
+<!--        <action-->
+<!--            android:id="@+id/action_titleScreen_to_premiereList"-->
+<!--            app:destination="@id/FirstFragment" />-->
+    </fragment>
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -25,14 +40,8 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
-    <activity
-        android:id="@+id/premiereList"
-        android:name="su.cus.announce.premiere.PremiereList"
-        android:label="list_premiere"
-        tools:layout="@layout/list_premiere" />
-    <activity
-        android:id="@+id/descriptionActivity"
-        android:name="su.cus.announce.DescriptionActivity.DescriptionActivity"
-        android:label="activity_description"
-        tools:layout="@layout/activity_description" />
+
+
+
+
 </navigation>

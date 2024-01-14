@@ -1,36 +1,47 @@
 package su.cus.announce.premiere
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import su.cus.announce.API.MoviesRepository.Movie
 import su.cus.announce.API.PremiereListPresenterInput
 import su.cus.announce.API.PremiereListPresenterOutput
-import su.cus.announce.DescriptionActivity.DescriptionActivity
+import su.cus.announce.NavigationController
 import su.cus.announce.databinding.ListPremiereBinding
 
 
-class PremiereList : ComponentActivity(), OnItemsClickListener, PremiereListPresenterOutput {
+class PremiereList(
+    private val navigationController: NavigationController,
+    private val context: Context
+) : Fragment(), OnItemsClickListener, PremiereListPresenterOutput {
 
     private val input: PremiereListPresenterInput by inject()
     private lateinit var binding: ListPremiereBinding
     private val recyclerView by lazy { binding.recyclerView }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = ListPremiereBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
 
         setupRecyclerView()
         input.loadMovies()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+
     private fun setupRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
 
@@ -40,13 +51,11 @@ class PremiereList : ComponentActivity(), OnItemsClickListener, PremiereListPres
 
 
     override fun onItemsClick(movieId: String) {
-        val intent = Intent(this, DescriptionActivity::class.java)
-        intent.putExtra("MOVIE_ID", movieId)
-        startActivity(intent)
+        navigationController.openDescription( movieId)
     }
 
     override fun showErrorMessage(errorMessage: String?) {
-        Toast.makeText(this, "Failed to load movies: $errorMessage", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Failed to load movies: $errorMessage", Toast.LENGTH_SHORT).show()
     }
 
 }

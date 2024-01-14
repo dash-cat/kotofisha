@@ -1,6 +1,5 @@
 package su.cus.announce.premiere
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import su.cus.announce.API.MoviesRepository.Movie
-import su.cus.announce.API.PremiereListPresenterInput
-import su.cus.announce.API.PremiereListPresenterOutput
-import su.cus.announce.NavigationController
 import su.cus.announce.databinding.ListPremiereBinding
 
 
-class PremiereList(
-    private val navigationController: NavigationController,
-    private val context: Context
-) : Fragment(), OnItemsClickListener, PremiereListPresenterOutput {
+class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOutput {
 
-    private val input: PremiereListPresenterInput by inject()
+    private val input: PremiereListPresenterInput by inject { parametersOf(this) }
     private lateinit var binding: ListPremiereBinding
     private val recyclerView by lazy { binding.recyclerView }
 
@@ -46,12 +40,12 @@ class PremiereList(
 
 
     override fun showMovies(moviesList: List<Movie>) {
-        recyclerView.adapter = PremiereListAdapter(moviesList, this@PremiereList)
+        recyclerView.adapter = PremiereListAdapter(moviesList, this)
     }
 
 
     override fun onItemsClick(movieId: String) {
-        navigationController.openDescription( movieId)
+//        navigationController.openDescription( movieId)
     }
 
     override fun showErrorMessage(errorMessage: String?) {

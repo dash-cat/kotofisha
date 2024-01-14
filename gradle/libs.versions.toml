@@ -21,6 +21,7 @@ koin = "3.5.3"
 espresso = "3.5.1"
 ext = "1.1.5"
 robolectric = "4.5.1"
+mockk = "1.13.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -52,6 +53,7 @@ androidx-espresso = { group = "androidx.test.espresso",  name = "espresso-core",
 androidx-ext = { group = "androidx.test.ext",  name = "junit",  version.ref = "ext"}
 androidx-espresso-intents = { group = "androidx.test.espresso",  name = "espresso-intents",  version.ref = "espresso"}
 org-robolectric = { group = "org.robolectric", name="robolectric", version.ref = "robolectric"}
+mockk = {group = "io.mockk", name = "mockk",  version.ref = "mockk"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

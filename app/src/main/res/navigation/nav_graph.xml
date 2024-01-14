@@ -13,11 +13,8 @@
         android:label="TitleScreen"
         tools:layout="@layout/title_screen">
         <action
-            android:id="@+id/action_to_titleScreen"
-            app:destination="@id/titleScreen" />
-<!--        <action-->
-<!--            android:id="@+id/action_titleScreen_to_premiereList"-->
-<!--            app:destination="@id/FirstFragment" />-->
+            android:id="@+id/action_titleScreen_to_premiereList"
+            app:destination="@id/premiereList" />
     </fragment>
 
     <fragment
@@ -40,8 +37,11 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
-
-
+    <fragment
+        android:id="@+id/premiereList"
+        android:name="su.cus.announce.premiere.PremiereList"
+        android:label="list_premiere"
+        tools:layout="@layout/list_premiere" />
 
 
 </navigation>

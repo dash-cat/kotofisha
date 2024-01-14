@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.org.robolectric)
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(libs.androidx.ext)

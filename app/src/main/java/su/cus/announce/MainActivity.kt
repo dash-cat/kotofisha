@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import su.cus.announce.DescriptionActivity.DescriptionActivity
 import su.cus.announce.databinding.ActivityMainBinding
-import su.cus.announce.premiere.PremiereList
 
 
 interface NavigationController {
@@ -35,10 +34,10 @@ class MainActivity : AppCompatActivity(), NavigationController {
         }
 
     override fun openPremiereList() {
-        val fragment = PremiereList(this, this)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
+
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragment_container, fragment)
+//            .commit()
     }
 
     override fun openDescription( movieId: String) {

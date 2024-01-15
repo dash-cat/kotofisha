@@ -1,27 +1,26 @@
 package su.cus.announce.API
 
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 import su.cus.announce.API.FilmById.FilmDataItem
-import su.cus.announce.API.MoviesRepository.Movie
+import su.cus.announce.API.MoviesRepository.ListPremiere
 
 interface IRetrofitClient {
-    @GET("movies")
+
     suspend fun getMovies(
-        @Query("year") year: Int,
-        @Query("month") month: String
-    ): List<Movie>
-    @GET("api/v2.2/films/:id")
+       year: Int,
+       month: String
+    ): ListPremiere
+
     suspend fun getFilm(
-        @Query("id") id: String
+        id: String
     ): FilmDataItem
 }
 class RetrofitClient: IRetrofitClient {
-    private val baseUrl = "https://kinopoiskapiunofficial.tech/"
+    private val baseUrl = "https://kinopoiskapiunofficial.tech/api/v2.2/"
     private val apiKey = "0161a006-38d5-448a-9ce4-9c72e615dbf5"
     private val client: MoviesApiService
 
@@ -38,24 +37,29 @@ class RetrofitClient: IRetrofitClient {
             .addInterceptor(headerInterceptor)
             .build()
 
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
 
         client = retrofit.create(MoviesApiService::class.java)
     }
 
-    override suspend fun getMovies(year: Int, month: String): List<Movie> {
-
+    override suspend fun getMovies(year: Int, month: String): ListPremiere {
+        println("TuT")
         val response = client.getMovies(year, month)
-        println("RESP $response")
-            if (response.isSuccessful) {
-                return response.body()?.items ?: emptyList()
-            } else {
-                throw Exception("Не получилось загрузить")
-            }
+        if (response.isSuccessful && response.body() != null) {
+            return response.body()!!
+        } else {
+            // Handle error, log response code and message
+            throw Exception("API Error: ${response.code()} ${response.message()}")
+        }
+
     }
 
     override suspend fun getFilm(id: String): FilmDataItem {

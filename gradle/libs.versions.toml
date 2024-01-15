@@ -22,8 +22,8 @@ espresso = "3.5.1"
 ext = "1.1.5"
 robolectric = "4.11.1"
 mockk = "1.13.9"
-coroutines = "1.7.1"  # Use the latest version
-
+coroutines = "1.7.1"
+navigation = "2.7.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,7 +59,9 @@ mockk = {group = "io.mockk", name = "mockk",  version.ref = "mockk"}
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref="serialization"}
+androidxNavigation = { id ="androidx.navigation.safeargs.kotlin", version.ref = "navigation"}

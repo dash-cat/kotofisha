@@ -18,6 +18,7 @@ class PremiereListAdapter(private val data: List<Movie>, private val listener: P
     }
 
     override fun onBindViewHolder(holder: PremiereViewHolder, position: Int) {
+        println("data $data")
         val movie = data[position]
         holder.bind(movie.posterUrlPreview)
         holder.textView.text = movie.nameRu
@@ -35,11 +36,13 @@ class PremiereListAdapter(private val data: List<Movie>, private val listener: P
     class PremiereViewHolder(view: View, private val listener: PremiereList) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val movieId = view.tag as String
-                    listener.onItemsClick(movieId)
+                val movieId = if (view.tag is String) {
+                    view.tag as String
+                } else {
+                    // Convert to String if it's not
+                    view.tag.toString()
                 }
+                    listener.onItemsClick(movieId)
             }
         }
 

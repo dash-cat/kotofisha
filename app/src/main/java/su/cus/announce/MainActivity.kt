@@ -1,11 +1,9 @@
 package su.cus.announce
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import su.cus.announce.DescriptionActivity.DescriptionActivity
 import su.cus.announce.databinding.ActivityMainBinding
 
 
@@ -13,7 +11,7 @@ interface NavigationController {
 
 
     fun openPremiereList()
-    fun openDescription( movieId: String)
+
 }
 class MainActivity : AppCompatActivity(), NavigationController {
 
@@ -40,11 +38,6 @@ class MainActivity : AppCompatActivity(), NavigationController {
 //            .commit()
     }
 
-    override fun openDescription( movieId: String) {
-        val intent = Intent(this, DescriptionActivity::class.java)
-        intent.putExtra("MOVIE_ID", movieId)
-        startActivity(intent)
-    }
 
     override fun onDestroy() {
         super.onDestroy()

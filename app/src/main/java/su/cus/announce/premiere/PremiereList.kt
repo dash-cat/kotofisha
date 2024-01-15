@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
-import su.cus.announce.API.MoviesRepository.Movie
+import su.cus.announce.API.MoviesRepository.ListPremiere
+import su.cus.announce.R
 import su.cus.announce.databinding.ListPremiereBinding
 
 
@@ -28,7 +30,7 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = ListPremiereBinding.inflate(layoutInflater)
 
 
@@ -38,8 +40,10 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
             input.loadMovies()
         }
 
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
     }
+
+
 
 
     private fun setupRecyclerView() {
@@ -47,14 +51,26 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
     }
 
 
-    override fun showMovies(moviesList: List<Movie>) {
-        recyclerView.adapter = PremiereListAdapter(moviesList, this)
+    override fun showMovies(premiere: ListPremiere) {
+        println("moviesList $premiere")
+        if (premiere.items.isNotEmpty()) {
+            recyclerView.adapter = PremiereListAdapter(premiere.items, this)
+        } else {
+            println("Movies list is empty")
+        }
     }
+//    override fun openDescription( movieId: String) {
+//        val intent = Intent(this, DescriptionActivity::class.java)
+//        intent.putExtra("MOVIE_ID", movieId)
+//        startActivity(intent)
+//    }
 
 
     override fun onItemsClick(movieId: String) {
-//        navigationController.openDescription( movieId)
+        findNavController().navigate(R.id.action_premiereList_to_descriptionFragment)
+
     }
+
 
     override suspend fun showErrorMessage(errorMessage: String?) {
         withContext(Dispatchers.Main) {

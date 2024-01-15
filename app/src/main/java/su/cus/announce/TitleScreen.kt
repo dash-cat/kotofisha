@@ -29,8 +29,10 @@ class TitleScreen(): Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.welcomeButton.setOnClickListener {
-            println("noteswnoti")
-            findNavController().navigate(R.id.action_titleScreen_to_premiereList)
+            println("Button clicked")
+            val navController = findNavController()
+            println("NavController: $navController")
+            navController.navigate(R.id.action_titleScreen_to_premiereList)
         }
     }
 }

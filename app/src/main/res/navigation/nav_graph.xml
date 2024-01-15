@@ -16,6 +16,27 @@
             android:id="@+id/action_titleScreen_to_premiereList"
             app:destination="@id/premiereList" />
     </fragment>
+    <fragment
+        android:id="@+id/premiereList"
+        android:name="su.cus.announce.premiere.PremiereList"
+        android:label="list_premiere"
+        tools:layout="@layout/list_premiere" >
+        <action
+            android:id="@+id/action_premiereList_to_descriptionFragment"
+            app:destination="@id/descriptionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/descriptionFragment"
+        android:name="su.cus.announce.DescriptionActivity.DescriptionFragment"
+        android:label="DescriptionFragment"
+        tools:layout="@layout/fragment_description">
+        <argument
+            android:name="movieId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_descriptionFragment_to_premiereList"
+            app:destination="@id/premiereList" />
+    </fragment>
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -37,11 +58,7 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/premiereList"
-        android:name="su.cus.announce.premiere.PremiereList"
-        android:label="list_premiere"
-        tools:layout="@layout/list_premiere" />
+
 
 
 </navigation>

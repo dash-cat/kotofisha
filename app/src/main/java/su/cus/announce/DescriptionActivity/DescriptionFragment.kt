@@ -26,6 +26,7 @@ class DescriptionFragment : Fragment() {
 
         val args = DescriptionFragmentArgs.fromBundle(requireArguments())
         val receivedData = args.movieId
+        println("receivedData $receivedData")
 
         binding.returnButtonToPremiere.setOnClickListener {
             println("Button clicked")

@@ -56,7 +56,6 @@ class RetrofitClient: IRetrofitClient {
         if (response.isSuccessful && response.body() != null) {
             return response.body()!!
         } else {
-            // Handle error, log response code and message
             throw Exception("API Error: ${response.code()} ${response.message()}")
         }
 

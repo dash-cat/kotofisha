@@ -59,7 +59,7 @@ class PremiereListAdapter(private val data: List<Movie>, private val listener: P
                 .into(imageView)
         }
 
-}
+ }
 
 
 }

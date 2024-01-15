@@ -12,7 +12,7 @@ interface MoviesApiService {
     @GET("films/premieres")
     suspend fun getMovies(@Query("year") year: Int, @Query("month") month: String): Response<ListPremiere>
 
-    @GET("film/{id}")
+    @GET("films/{id}")
     suspend fun getFilmsById(@Path("id") id: String): Response<FilmDataItem>
 }
 

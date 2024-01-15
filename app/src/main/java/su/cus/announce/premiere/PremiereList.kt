@@ -15,7 +15,6 @@ import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import su.cus.announce.API.MoviesRepository.ListPremiere
-import su.cus.announce.R
 import su.cus.announce.databinding.ListPremiereBinding
 
 
@@ -44,30 +43,32 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
     }
 
 
-
-
     private fun setupRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(context)
+
     }
 
 
     override fun showMovies(premiere: ListPremiere) {
         println("moviesList $premiere")
-        if (premiere.items.isNotEmpty()) {
-            recyclerView.adapter = PremiereListAdapter(premiere.items, this)
-        } else {
-            println("Movies list is empty")
-        }
+
+            if (premiere.items.isNotEmpty()) {
+                recyclerView.adapter = PremiereListAdapter(premiere.items, this)
+            } else {
+                println("Movies list is empty")
+            }
+
     }
-//    override fun openDescription( movieId: String) {
-//        val intent = Intent(this, DescriptionActivity::class.java)
-//        intent.putExtra("MOVIE_ID", movieId)
-//        startActivity(intent)
-//    }
 
 
     override fun onItemsClick(movieId: String) {
-        findNavController().navigate(R.id.action_premiereList_to_descriptionFragment)
+
+        val action = PremiereListDirections.actionPremiereListToDescriptionFragment(movieId)
+        findNavController().navigate(action)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            input.getMovieById(movieId)
+        }
 
     }
 

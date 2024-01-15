@@ -4,7 +4,6 @@ import android.content.Context
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import su.cus.announce.DataCache
-import su.cus.announce.premiere.ICachedData
 
 class CachedData<T>(
     context: Context,

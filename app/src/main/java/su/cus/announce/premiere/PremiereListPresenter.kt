@@ -3,17 +3,21 @@ package su.cus.announce.premiere
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import su.cus.announce.API.CachedData
+import su.cus.announce.API.FilmById.FilmDataItem
 import su.cus.announce.API.ICachedData
 import su.cus.announce.API.IRetrofitClient
 import su.cus.announce.API.MoviesRepository.ListPremiere
 
 interface PremiereListPresenterInput {
     suspend fun loadMovies()
+    suspend fun getMovieById(id: String)
 
 }
 
 interface PremiereListPresenterOutput {
     suspend fun showErrorMessage(errorMessage: String?)
+
 
     fun showMovies(premiere: ListPremiere )
 
@@ -24,30 +28,73 @@ class PremiereListPresenterImpl(
     val context: Context,
     private val output: PremiereListPresenterOutput,
     private val client: IRetrofitClient,
-    private val cache: ICachedData<ListPremiere>,
+    private val cacheFactory: ICachedDataFactory
 ): PremiereListPresenterInput {
 
-    override suspend fun loadMovies() {
-
+    private suspend fun <T> fetchCached(
+        fetchData: suspend () -> T,
+        makeCache: () -> ICachedData<T>
+    ): T {
+        val cache = makeCache()
         val cachedData = cache.read()
-        withContext(Dispatchers.Main) {
-            if (cachedData == null) {
-                println("Fetch: $cachedData")
-                fetchMoviesFromNetwork()
-            } else {
-                output.showMovies(cachedData)
-            }
+        return if (cachedData == null) {
+            val fetchedData = fetchData()
+            cache.write(fetchedData)
+            fetchedData
+        } else {
+            cachedData
         }
     }
 
-    private suspend fun fetchMoviesFromNetwork() {
+    override suspend fun loadMovies() {
         try {
-            val movies = client.getMovies(2023, "JANUARY")
-            println("movies 2: $movies")
-            output.showMovies(movies)
-            cache.write(movies)
+            val movies = fetchCached({
+                client.getMovies(2023, "JANUARY")
+            }, {
+                cacheFactory.makeCachedDataForMoviesList()
+            })
+            withContext(Dispatchers.Main) {
+                output.showMovies(movies)
+            }
         } catch (e: Exception) {
             output.showErrorMessage("Ошибка загрузки $e")
         }
     }
+    override suspend fun getMovieById(id: String) {
+        try {
+            val film = fetchCached({
+                client.getFilm(id)
+            }, {
+                cacheFactory.makeCachedDataForMovie(id)
+            })
+            ////////
+        } catch (e: Exception) {
+            output.showErrorMessage("Ошибка загрузки $e")
+        }
+    }
+}
+
+interface ICachedDataFactory {
+    fun makeCachedDataForMoviesList(): ICachedData<ListPremiere>
+    fun makeCachedDataForMovie(movieId: String): ICachedData<FilmDataItem>
+}
+
+class CachedDataFactory(
+    private val context: Context
+): ICachedDataFactory {
+    override fun makeCachedDataForMoviesList(): ICachedData<ListPremiere> {
+        return CachedData(
+            context,
+            ListPremiere.serializer(),
+            "movies.cache"
+        )
+    }
+    override fun makeCachedDataForMovie(movieId: String): ICachedData<FilmDataItem> {
+        return CachedData(
+            context,
+            FilmDataItem.serializer(),
+            "movie.$movieId.cache"
+        )
+    }
+
 }

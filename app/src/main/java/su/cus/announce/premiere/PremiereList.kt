@@ -7,6 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import su.cus.announce.API.MoviesRepository.Movie
@@ -29,7 +33,11 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
 
 
         setupRecyclerView()
-        input.loadMovies()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            input.loadMovies()
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -48,8 +56,10 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
 //        navigationController.openDescription( movieId)
     }
 
-    override fun showErrorMessage(errorMessage: String?) {
-        Toast.makeText(context, "Failed to load movies: $errorMessage", Toast.LENGTH_SHORT).show()
+    override suspend fun showErrorMessage(errorMessage: String?) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

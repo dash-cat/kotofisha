@@ -1,14 +1,24 @@
 package su.cus.announce
 
+import kotlinx.serialization.builtins.ListSerializer
 import org.koin.dsl.module
 import su.cus.announce.API.IRetrofitClient
+import su.cus.announce.API.MoviesRepository.Movie
 import su.cus.announce.API.RetrofitClient
+import su.cus.announce.premiere.CachedData
 import su.cus.announce.premiere.PremiereListPresenterImpl
 import su.cus.announce.premiere.PremiereListPresenterInput
 
 val appModule = module {
     single<UserRepository> { UserRepositoryImpl() }
-    factory <PremiereListPresenterInput>{ params -> PremiereListPresenterImpl(get(), params.get(), get()) }
+    factory <PremiereListPresenterInput>{ params ->
+        val cache = CachedData<List<Movie>>(
+            get(),
+            ListSerializer(Movie.serializer()),
+            "movies.cache"
+        )
+        PremiereListPresenterImpl(get(), params.get(), get(), cache)
+    }
     factory {  UserPresenterImpl(get()) }
     single <IRetrofitClient>{ RetrofitClient() }
 }

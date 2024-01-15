@@ -46,14 +46,17 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE.md,LICENSE-notice.md}"
         }
     }
     buildToolsVersion = "34.0.0"
     ndkVersion = "26.1.10909125"
+
 }
 
 dependencies {
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.org.robolectric)
     androidTestImplementation(libs.androidx.espresso.intents)

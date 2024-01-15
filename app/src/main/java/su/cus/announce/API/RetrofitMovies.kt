@@ -1,28 +1,24 @@
 package su.cus.announce.API
 
-import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 import su.cus.announce.API.FilmById.FilmDataItem
 import su.cus.announce.API.MoviesRepository.Movie
-import su.cus.announce.API.MoviesRepository.MoviesPremiere
 
 interface IRetrofitClient {
-    fun getMovies(
-        year: Int,
-        month: String,
-        callback: (Result<List<Movie>>) -> Unit
-    )
-
-    fun getFilm(
-        id: String,
-        callback: (Result<FilmDataItem>) -> Unit
-    )
+    @GET("movies")
+    suspend fun getMovies(
+        @Query("year") year: Int,
+        @Query("month") month: String
+    ): List<Movie>
+    @GET("api/v2.2/films/:id")
+    suspend fun getFilm(
+        @Query("id") id: String
+    ): FilmDataItem
 }
 class RetrofitClient: IRetrofitClient {
     private val baseUrl = "https://kinopoiskapiunofficial.tech/"
@@ -51,46 +47,24 @@ class RetrofitClient: IRetrofitClient {
         client = retrofit.create(MoviesApiService::class.java)
     }
 
-    override fun getMovies(year: Int, month: String, callback: (Result<List<Movie>>) -> Unit) {
-        client.getMovies(year, month).enqueue(object:
-            Callback<MoviesPremiere> {
-            override fun onResponse(call: Call<MoviesPremiere>, response: Response<MoviesPremiere>) {
-                if (response.isSuccessful) {
-                    val moviesList = response.body()?.items ?: emptyList()
-                    callback(Result.success(moviesList))
+    override suspend fun getMovies(year: Int, month: String): List<Movie> {
 
-                } else {
-                    callback(Result.failure(Exception("Не получилось загрузить")))
-                }
+        val response = client.getMovies(year, month)
+        println("RESP $response")
+            if (response.isSuccessful) {
+                return response.body()?.items ?: emptyList()
+            } else {
+                throw Exception("Не получилось загрузить")
             }
-
-            override fun onFailure(call: Call<MoviesPremiere>, t: Throwable) {
-                callback(Result.failure(t))
-                Log.d("PremiereList", "Network request failed: ${t.message}")
-            }
-        })
     }
 
-    override fun getFilm(id: String, callback: (Result<FilmDataItem>) -> Unit) {
-        client.getFilmsById(id).enqueue(object:
-            Callback<FilmDataItem> {
-            override fun onResponse(call: Call<FilmDataItem>, response: Response<FilmDataItem>) {
-                if (response.isSuccessful) {
-                    val film = response.body()
-                    if (film != null) {
-                        callback(Result.success(film))
-                    } else {
-                        callback(Result.failure(Exception("Не получилось загрузить")))
-                    }
-                } else {
-                    callback(Result.failure(Exception("Не получилось загрузить")))
-                }
+    override suspend fun getFilm(id: String): FilmDataItem {
+            val response = client.getFilmsById(id)
+            if (response.isSuccessful) {
+                return response.body()
+                    ?: throw Exception("Не получилось загрузить")
+            } else {
+                throw Exception("Не получилось загрузить")
             }
-
-            override fun onFailure(call: Call<FilmDataItem>, t: Throwable) {
-                callback(Result.failure(t))
-                Log.d("PremiereList", "Network request failed: ${t.message}")
-            }
-        })
     }
 }

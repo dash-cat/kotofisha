@@ -1,51 +1,75 @@
 package su.cus.announce.premiere
 
 import android.content.Context
-import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import su.cus.announce.API.IRetrofitClient
 import su.cus.announce.API.MoviesRepository.Movie
 import su.cus.announce.DataCache
 
 interface PremiereListPresenterInput {
-    fun loadMovies()
+    suspend fun loadMovies()
 
 }
 
 interface PremiereListPresenterOutput {
-    fun showErrorMessage(errorMessage: String?)
+    suspend fun showErrorMessage(errorMessage: String?)
 
     fun showMovies(moviesList: List<Movie> )
 
+}
+interface ICachedData<T> {
+    fun read(): T?
+
+    fun write(obj:T)
+}
+
+class CachedData<T>(
+    context: Context,
+    private val serializer: KSerializer<T>,
+    private val filename: String
+): ICachedData<T> {
+
+    private val cache = DataCache(context)
+    override fun read(): T? {
+
+        val cachedData = cache.readFromCache(filename) ?: return null
+        println("TUT")
+        println(Json.decodeFromString(serializer, cachedData))
+        return Json.decodeFromString(serializer, cachedData)
+    }
+
+    override fun write(obj: T) {
+        cache.writeToCache(filename, Json.encodeToString(serializer, obj))
+    }
 }
 
 class PremiereListPresenterImpl(
     val context: Context,
     private val output: PremiereListPresenterOutput,
-    private val client: IRetrofitClient
+    private val client: IRetrofitClient,
+    private val cache: ICachedData<List<Movie>>,
 ): PremiereListPresenterInput {
 
-    private val filename = "movies.cache"
-    private val cache = DataCache(context)
-    override fun loadMovies() {
-        val cachedData = cache.readFromCache(filename)
-        if (cachedData.isNullOrEmpty()) {
+    override suspend fun loadMovies() {
+        val cachedData = cache.read()
+        println("Cache 2: $cachedData")
+        println("Cache 3: $cache")
+        if (cachedData == null) {
             fetchMoviesFromNetwork()
         } else {
-            displayMoviesFromCache(cachedData)
+            output.showMovies(cachedData)
         }
     }
 
-    private fun fetchMoviesFromNetwork() {
-        client.getMovies(2023, "JANUARY") { result ->
-            result.fold({
-                output.showMovies(it)
-            }, {
-                output.showErrorMessage("Ошибка загрузки")
-            })
+    private suspend fun fetchMoviesFromNetwork() {
+        try {
+            val movies = client.getMovies(2023, "JANUARY")
+            println("movies 2: $movies")
+            output.showMovies(movies)
+            cache.write(movies)
+        } catch (e: Exception) {
+            output.showErrorMessage("Ошибка загрузки $e")
         }
-    }
-    private fun displayMoviesFromCache(cachedData: String) {
-        output.showMovies(Json.decodeFromString<List<Movie>>(cachedData))
     }
 }

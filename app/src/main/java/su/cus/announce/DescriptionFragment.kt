@@ -1,4 +1,4 @@
-package su.cus.announce.DescriptionActivity
+package su.cus.announce
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import su.cus.announce.R
+import androidx.navigation.fragment.navArgs
 import su.cus.announce.databinding.FragmentDescriptionBinding
 
 class DescriptionFragment : Fragment() {
 
     private lateinit var binding: FragmentDescriptionBinding
-
+    private val args: DescriptionFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,15 +24,13 @@ class DescriptionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val args = DescriptionFragmentArgs.fromBundle(requireArguments())
-        val receivedData = args.movieId
-        println("receivedData $receivedData")
+
+        println(args)
+        val receivedFilm = args.filmDataItem
+        println("receivedFilm: $receivedFilm")
 
         binding.returnButtonToPremiere.setOnClickListener {
-            println("Button clicked")
-            val navController = findNavController()
-            println("NavController: $navController")
-            navController.navigate(R.id.action_descriptionFragment_to_premiereList)
+            findNavController().navigate(R.id.action_descriptionFragment_to_premiereList)
         }
     }
 }

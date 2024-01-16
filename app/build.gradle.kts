@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.androidxNavigation)
+    alias(libs.plugins.kotlinParcelize)
 }
 
 android {
@@ -43,7 +44,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 //    packaging {
 //        resources {

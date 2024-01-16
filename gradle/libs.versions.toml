@@ -24,6 +24,7 @@ robolectric = "4.11.1"
 mockk = "1.13.9"
 coroutines = "1.7.1"
 navigation = "2.7.6"
+parcelize = "1.9.22"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,3 +66,4 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref="serialization"}
 androidxNavigation = { id ="androidx.navigation.safeargs.kotlin", version.ref = "navigation"}
+kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize"}

@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import su.cus.announce.API.FilmDescription.FilmDataItem
 import su.cus.announce.API.MoviesRepository.ListPremiere
 import su.cus.announce.databinding.ListPremiereBinding
 
@@ -32,8 +33,7 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
     ): View {
         binding = ListPremiereBinding.inflate(layoutInflater)
 
-
-        setupRecyclerView()
+        recyclerView.layoutManager = LinearLayoutManager(context)
 
         CoroutineScope(Dispatchers.IO).launch {
             input.loadMovies()
@@ -43,34 +43,36 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
     }
 
 
-    private fun setupRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-    }
-
-
     override fun showMovies(premiere: ListPremiere) {
-        println("moviesList $premiere")
-
             if (premiere.items.isNotEmpty()) {
                 recyclerView.adapter = PremiereListAdapter(premiere.items, this)
             } else {
                 println("Movies list is empty")
             }
-
     }
+
 
 
     override fun onItemsClick(movieId: String) {
-
-        val action = PremiereListDirections.actionPremiereListToDescriptionFragment(movieId)
-        findNavController().navigate(action)
-
         CoroutineScope(Dispatchers.IO).launch {
-            input.getMovieById(movieId)
+            val film = input.getMovieById(movieId) // This may return null
+            withContext(Dispatchers.Main) {
+                film?.let {
+                    sendFilmToDescription(it)
+                } ?: run {
+                    // Handle the case where film is null, maybe show an error message
+                    Toast.makeText(context, "Film not found.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
-
     }
+
+    override fun sendFilmToDescription(film: FilmDataItem) {
+        println("FIlm $film")
+        val action = PremiereListDirections.actionPremiereListToDescriptionFragment(film)
+        findNavController().navigate(action)
+    }
+
 
 
     override suspend fun showErrorMessage(errorMessage: String?) {
@@ -78,7 +80,6 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
-
 }
 
 

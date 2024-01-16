@@ -1,11 +1,11 @@
 package su.cus.announce.API
 
+import su.cus.announce.API.FilmDescription.FilmDataItem
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import su.cus.announce.API.FilmById.FilmDataItem
 import su.cus.announce.API.MoviesRepository.ListPremiere
 
 interface IRetrofitClient {

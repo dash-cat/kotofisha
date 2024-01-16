@@ -1,10 +1,10 @@
 package su.cus.announce.API
 
+import su.cus.announce.API.FilmDescription.FilmDataItem
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import su.cus.announce.API.FilmById.FilmDataItem
 import su.cus.announce.API.MoviesRepository.ListPremiere
 
 interface MoviesApiService {

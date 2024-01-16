@@ -3,15 +3,15 @@ package su.cus.announce.premiere
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import su.cus.announce.API.CachedData
-import su.cus.announce.API.FilmById.FilmDataItem
+import su.cus.announce.API.FilmDescription.FilmDataItem
 import su.cus.announce.API.ICachedData
 import su.cus.announce.API.IRetrofitClient
 import su.cus.announce.API.MoviesRepository.ListPremiere
+import su.cus.announce.ICachedDataFactory
 
 interface PremiereListPresenterInput {
     suspend fun loadMovies()
-    suspend fun getMovieById(id: String)
+    suspend fun getMovieById(id: String): FilmDataItem?
 
 }
 
@@ -20,6 +20,8 @@ interface PremiereListPresenterOutput {
 
 
     fun showMovies(premiere: ListPremiere )
+
+    fun sendFilmToDescription(film: FilmDataItem)
 
 
 }
@@ -60,41 +62,18 @@ class PremiereListPresenterImpl(
             output.showErrorMessage("Ошибка загрузки $e")
         }
     }
-    override suspend fun getMovieById(id: String) {
-        try {
+    override suspend fun getMovieById(id: String): FilmDataItem? {
+        return try {
             val film = fetchCached({
                 client.getFilm(id)
             }, {
                 cacheFactory.makeCachedDataForMovie(id)
             })
-            ////////
+            film // This is the FilmDataItem to return
         } catch (e: Exception) {
             output.showErrorMessage("Ошибка загрузки $e")
+            null // Return null in case of an error
         }
     }
 }
 
-interface ICachedDataFactory {
-    fun makeCachedDataForMoviesList(): ICachedData<ListPremiere>
-    fun makeCachedDataForMovie(movieId: String): ICachedData<FilmDataItem>
-}
-
-class CachedDataFactory(
-    private val context: Context
-): ICachedDataFactory {
-    override fun makeCachedDataForMoviesList(): ICachedData<ListPremiere> {
-        return CachedData(
-            context,
-            ListPremiere.serializer(),
-            "movies.cache"
-        )
-    }
-    override fun makeCachedDataForMovie(movieId: String): ICachedData<FilmDataItem> {
-        return CachedData(
-            context,
-            FilmDataItem.serializer(),
-            "movie.$movieId.cache"
-        )
-    }
-
-}

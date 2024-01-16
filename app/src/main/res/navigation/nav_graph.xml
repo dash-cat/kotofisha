@@ -27,12 +27,12 @@
     </fragment>
     <fragment
         android:id="@+id/descriptionFragment"
-        android:name="su.cus.announce.DescriptionActivity.DescriptionFragment"
+        android:name="su.cus.announce.DescriptionFragment"
         android:label="DescriptionFragment"
         tools:layout="@layout/fragment_description">
         <argument
-            android:name="movieId"
-            app:argType="string" />
+            android:name="filmDataItem"
+            app:argType="su.cus.announce.API.FilmDescription.FilmDataItem" />
         <action
             android:id="@+id/action_descriptionFragment_to_premiereList"
             app:destination="@id/premiereList" />

@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,22 +38,51 @@ class DescriptionFragment : Fragment() {
         val receivedFilm = args.filmDataItem
         println("receivedFilm: $receivedFilm")
 
+       inflateLayout()
+    }
+
+    private fun inflateLayout() {
         val viewModel: DescriptionViewModel by inject {
             parametersOf(args.filmDataItem.kinopoiskId.toString())
         }
 
         this.viewModel = viewModel
 
+        val ratingBar: RatingBar = binding.kinopoiskRaiting
+        val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        ratingBar.startAnimation(fadeInAnimation)
+
+//        val ratingBar: RatingBar = binding.kinopoiskRaiting
+//        val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+//        ratingBar.startAnimation(fadeInAnimation)
+
+
+        viewModel.ratingKinopoisk.observe(viewLifecycleOwner) { rangeCountKinopoisk ->
+            binding.kinopoiskRaiting.rating = rangeCountKinopoisk?.toFloat()!!
+        }
+
+        viewModel.ratingImdb.observe(viewLifecycleOwner) { ratingImdb ->
+            binding.kinopoiskRaiting.rating = ratingImdb?.toFloat()!!
+        }
+
         viewModel.title.observe(viewLifecycleOwner) { title ->
             binding.nameFilm.text = title
         }
 
         viewModel.posterUrl.observe(viewLifecycleOwner) { posterUrl ->
-            binding.imagePrevFilm
+            val imageView = binding.imagePrevFilm
+            Glide.with(this)
+                .load(posterUrl)
+                .into(imageView)
+
         }
 
         viewModel.releaseYear.observe(viewLifecycleOwner) { releaseYear ->
             binding.datePrev.text = releaseYear
+        }
+
+        viewModel.genreText.observe(viewLifecycleOwner) { genreText ->
+            binding.genreTitle.text = genreText
         }
 
         viewModel.descriptionText.observe(viewLifecycleOwner) { descriptionText ->
@@ -62,6 +94,9 @@ class DescriptionFragment : Fragment() {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
+
+
+
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.loadDescription()

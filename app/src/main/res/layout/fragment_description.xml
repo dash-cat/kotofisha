@@ -10,71 +10,66 @@
 
     <ImageView
         android:id="@+id/imagePrevFilm"
-        android:layout_width="196dp"
-        android:layout_height="213dp"
-        android:layout_marginEnd="2dp"
+        android:layout_width="197dp"
+        android:layout_height="186dp"
+        android:layout_marginStart="28dp"
         android:layout_marginBottom="18dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toTopOf="@+id/returnButtonToPremiere"
-        app:layout_constraintEnd_toStartOf="@+id/textDescription"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.037" />
 
     <TextView
         android:id="@+id/nameFilm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_width="247dp"
+        android:layout_height="28dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="139dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif"
         android:text="TextView"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imagePrevFilm"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagePrevFilm" />
 
     <TextView
         android:id="@+id/datePrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="136dp"
-        android:layout_marginBottom="45dp"
-        android:text="TextView"
 
-        app:layout_constraintBottom_toTopOf="@+id/nameFilm"
+        android:layout_marginTop="233dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/textDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imagePrevFilm"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textDescription"
-        android:layout_width="207dp"
-        android:layout_height="529dp"
-        android:layout_marginStart="1dp"
+        android:layout_width="405dp"
+        android:layout_height="422dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.867" />
 
     <Button
         android:id="@+id/returnButtonToPremiere"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="342dp"
         android:text="вернуться к афише"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textDescription"
+        app:layout_constraintBottom_toBottomOf="@+id/textDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.931"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagePrevFilm" />
+        app:layout_constraintTop_toTopOf="@+id/textDescription"
+        app:layout_constraintVertical_bias="0.954" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

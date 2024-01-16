@@ -11,7 +11,8 @@ val appModule = module {
     factory <PremiereListPresenterInput>{ params ->
         PremiereListPresenterImpl(get(), params.get(), get(), get())
     }
-    factory {  UserPresenterImpl(get()) }
+    factory { UserPresenterImpl(get()) }
+    factory { params -> DescriptionViewModel(params.get(), get()) }
     single <ICachedDataFactory>{ CachedDataFactory(get()) }
     single <IRetrofitClient>{ RetrofitClient() }
 }

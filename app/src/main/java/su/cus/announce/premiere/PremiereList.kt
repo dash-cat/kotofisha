@@ -55,12 +55,11 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
 
     override fun onItemsClick(movieId: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val film = input.getMovieById(movieId) // This may return null
+            val film = input.getMovieById(movieId)
             withContext(Dispatchers.Main) {
                 film?.let {
                     sendFilmToDescription(it)
                 } ?: run {
-                    // Handle the case where film is null, maybe show an error message
                     Toast.makeText(context, "Film not found.", Toast.LENGTH_SHORT).show()
                 }
             }

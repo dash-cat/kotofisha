@@ -59,6 +59,9 @@ android {
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.org.robolectric)
     androidTestImplementation(libs.androidx.espresso.intents)

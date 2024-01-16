@@ -12,8 +12,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/cats_back"
         android:scaleType="fitCenter"
-        android:src="@drawable/cats"
-        />
+        android:src="@drawable/cats" />
 
     <TextView
         android:id="@+id/textView"
@@ -31,20 +30,32 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="202dp" />
 
+
     <Button
         android:id="@+id/welcomeButton"
-        android:clickable="true"
         android:layout_width="wrap_content"
-        android:layout_height="65dp"
-        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginEnd="69dp"
-        android:layout_marginBottom="33dp"
-        android:background="@drawable/rounded_button"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="54dp"
+        android:clickable="true"
+        android:focusable="true"
         android:text="@string/go_to_come"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        android:focusable="true" />
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="57dp"
+        android:layout_marginBottom="55dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="login"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </RelativeLayout>

@@ -11,4 +11,9 @@
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="color1">#FF5733</color>         <!-- Custom color 1 -->
+    <color name="color2">#FFC300</color>         <!-- Custom color 2 -->
+    <color name="color3">#4CAF50</color>
 </resources>

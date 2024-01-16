@@ -15,7 +15,16 @@
         <action
             android:id="@+id/action_titleScreen_to_premiereList"
             app:destination="@id/premiereList" />
+        <action
+            android:id="@+id/action_titleScreen_to_loginPage"
+            app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="su.cus.announce.Login.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+
     <fragment
         android:id="@+id/premiereList"
         android:name="su.cus.announce.premiere.PremiereList"
@@ -58,7 +67,6 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
-
 
 
 </navigation>

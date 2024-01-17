@@ -21,7 +21,7 @@ interface PremiereListPresenterOutput {
 
     fun showMovies(premiere: ListPremiere )
 
-    fun sendFilmToDescription(film: FilmDataItem)
+//    fun sendFilmToDescription(film: FilmDataItem)
 
 
 }

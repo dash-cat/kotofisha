@@ -66,7 +66,7 @@ class PremiereList() : Fragment(), OnItemsClickListener, PremiereListPresenterOu
         }
     }
 
-    override fun sendFilmToDescription(film: FilmDataItem) {
+     private fun sendFilmToDescription(film: FilmDataItem) {
         println("FIlm $film")
         val action = PremiereListDirections.actionPremiereListToDescriptionFragment(film)
         findNavController().navigate(action)

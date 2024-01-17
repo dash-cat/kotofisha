@@ -49,6 +49,9 @@ class TitleScreen : Fragment() {
         val loginButton = binding.loginButton
         loginButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
 
+        loginButton.setOnClickListener{
+            findNavController().navigate(R.id.action_titleScreen_to_loginPage)
+        }
         // Анимация начинается автоматически, когда фрагмент становится видимым
         val colorAnimation = ValueAnimator.ofArgb(
             ContextCompat.getColor(requireContext(), R.color.colorPrimary),
@@ -61,6 +64,6 @@ class TitleScreen : Fragment() {
         colorAnimation.repeatMode = ValueAnimator.REVERSE
         colorAnimation.repeatCount = ValueAnimator.INFINITE
         colorAnimation.start()
-        findNavController().navigate(R.id.action_titleScreen_to_loginPage)
+
     }
 }

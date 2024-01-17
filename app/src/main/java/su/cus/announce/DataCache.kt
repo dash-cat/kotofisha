@@ -9,8 +9,8 @@ class DataCache(private val context: Context) {
 
     // Функция для записи данных в файл кэша
     fun writeToCache(fileName: String, data: String) {
-        val cacheDir = context.externalCacheDir
-        val cacheFile = File(cacheDir, fileName)
+
+        val cacheFile = File(context.externalCacheDir, fileName)
 
         try {
             FileWriter(cacheFile).use { writer ->
@@ -32,10 +32,7 @@ class DataCache(private val context: Context) {
         }
 
         val cacheFile = File(cacheDir, fileName)
-        println("Cache directory: $cacheDir")
-        println("Cache file: $cacheFile")
-        println("Cache file exists: ${cacheFile.exists()}")
-        println("Cache directory writable: ${cacheDir.canWrite()}")
+
         if (!cacheFile.exists()) return null
 
         return try {
@@ -45,7 +42,6 @@ class DataCache(private val context: Context) {
                 while (reader.readLine().also { line = it } != null) {
                     text.append(line)
                 }
-                println("Text $text")
                 text.toString()
             }
         } catch (e: Exception) {

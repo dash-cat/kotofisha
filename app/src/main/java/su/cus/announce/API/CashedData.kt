@@ -13,15 +13,11 @@ class CachedData<T>(
 
     private val cache = DataCache(context)
     override fun read(): T? {
-
         val cachedData = cache.readFromCache(filename) ?: return null
-        val cacheJson = Json.decodeFromString(serializer, cachedData)
-        println("TUT $cacheJson")
-        return cacheJson
+        return Json.decodeFromString(serializer, cachedData)
     }
 
     override fun write(obj: T) {
-
         cache.writeToCache(filename, Json.encodeToString(serializer, obj))
     }
 }

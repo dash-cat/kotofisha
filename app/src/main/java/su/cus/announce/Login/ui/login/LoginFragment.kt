@@ -1,5 +1,6 @@
 package su.cus.announce.Login.ui.login
 
+import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,12 +15,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import su.cus.announce.R
+import su.cus.announce.StarrySkyRenderer
 import su.cus.announce.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
     private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
+    private lateinit var glSurfaceView: GLSurfaceView
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,17 +38,32 @@ class LoginFragment : Fragment() {
         return binding.root
 
     }
+    override fun onResume() {
+        super.onResume()
+        glSurfaceView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        glSurfaceView.onPause()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
 
         val usernameEditText = binding.username
         val passwordEditText = binding.password
         val loginButton = binding.login
         val loadingProgressBar = binding.loading
         val returnButton = binding.returnToTitleButton
+
+        glSurfaceView = binding.glSurfaceView
+        glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
+        glSurfaceView.setRenderer(StarrySkyRenderer())
+
+
+
 
         returnButton.setOnClickListener{
             findNavController().navigate(R.id.action_loginFragment_to_titleScreen)

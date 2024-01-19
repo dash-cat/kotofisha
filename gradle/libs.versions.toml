@@ -85,7 +85,6 @@ android-test = { group = "androidx.test", name = "core", version.ref = "androidT
 mokito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mokitoKotlin"}
 firebase = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase"}
 facebook = { group = "com.facebook.android", name = "facebook-android-sdk", version.ref = "facebook"}
-#safe-args = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationFragmentKtx"}
 firebase-boom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBoom"}
 firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalitic"}
 #firebase-storage = {group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase"}

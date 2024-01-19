@@ -61,11 +61,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.play.services.location)
     implementation(libs.firebase.ui.firestore)
     implementation(libs.firebase.ui.storage)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.ui.database)
-    implementation(libs.firebase.storage)
+//    implementation(libs.firebase.storage)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.boom))
     implementation(libs.facebook)

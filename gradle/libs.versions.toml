@@ -41,6 +41,7 @@ firebaseAnalitic = "21.5.0"
 appDistribution = "4.0.1"
 firebaseCrashlyticsGradle = "2.9.9"
 perfPlaginFirebase = "1.4.2"
+playServices = "21.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -87,11 +88,12 @@ facebook = { group = "com.facebook.android", name = "facebook-android-sdk", vers
 #safe-args = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationFragmentKtx"}
 firebase-boom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBoom"}
 firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalitic"}
-firebase-storage = {group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase"}
+#firebase-storage = {group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase"}
 firebase-ui-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUi"}
 firebase-ui-database = {group = "com.firebaseui", name = "firebase-ui-database", version.ref = "firebaseUi"}
 firebase-ui-storage = {group = "com.firebaseui", name = "firebase-ui-storage", version.ref = "firebaseUi"}
 firebase-ui-firestore = {group = "com.firebaseui", name = "firebase-ui-firestore", version.ref = "firebaseUi"}
+firebase-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServices"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

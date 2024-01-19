@@ -4,6 +4,8 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import su.cus.spontanotalk.Login.data.LoginRepository
 import su.cus.spontanotalk.Login.data.Result
 import su.cus.spontanotalk.R
@@ -16,15 +18,34 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    suspend fun  login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+    private val _isSignInButtonEnabled = MutableLiveData<Boolean>()
+    val isSignInButtonEnabled: LiveData<Boolean> = _isSignInButtonEnabled
 
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+    fun setSignInButtonClickListener(listener: SignInButtonClickListener) {
+        _signInButtonClickListener = listener
+    }
+
+    private lateinit var _signInButtonClickListener: SignInButtonClickListener
+
+    interface SignInButtonClickListener {
+        fun onSignInButtonClick()
+    }
+
+    fun signIn() {
+        _signInButtonClickListener.onSignInButtonClick()
+    }
+
+    fun login(username: String, password: String) {
+        viewModelScope.launch {
+            // can be launched in a separate asynchronous job
+            val result = loginRepository.login(username, password)
+
+            if (result is Result.Success) {
+                _loginResult.value =
+                    LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+            } else {
+                _loginResult.value = LoginResult(error = R.string.login_failed)
+            }
         }
     }
 

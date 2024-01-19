@@ -85,9 +85,12 @@ mokito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version
 firebase = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase"}
 firebase-ui = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUi"}
 facebook = { group = "com.facebook.android", name = "facebook-android-sdk", version.ref = "facebook"}
-safe-args = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationFragmentKtx"}
+#safe-args = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationFragmentKtx"}
 firebase-boom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBoom"}
 firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalitic"}
+#firebase-core = {group = "com.google.firebase", name = "firebase-core", version.ref = "firebase"}
+#firebase-ui-database = {group = "com.google.firebase", name = "firebase-ui-database", version.ref = "firebaseUi"}
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

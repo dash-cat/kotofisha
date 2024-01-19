@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/titleScreen"
-        android:name="su.cus.SpontanoTalk.TitleScreen"
+        android:name="su.cus.spontanotalk.TitleScreen"
         android:label="TitleScreen"
         tools:layout="@layout/title_screen">
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="su.cus.SpontanoTalk.Login.ui.login.LoginFragment"
+        android:name="su.cus.spontanotalk.Login.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/premiereList"
-        android:name="su.cus.SpontanoTalk.premiere.PremiereList"
+        android:name="su.cus.spontanotalk.premiere.PremiereList"
         android:label="list_premiere"
         tools:layout="@layout/list_premiere" >
         <action
@@ -40,12 +40,12 @@
     </fragment>
     <fragment
         android:id="@+id/descriptionFragment"
-        android:name="su.cus.SpontanoTalk.DescriptionFragment"
+        android:name="su.cus.spontanotalk.DescriptionFragment"
         android:label="DescriptionFragment"
         tools:layout="@layout/fragment_description">
         <argument
             android:name="filmDataItem"
-            app:argType="su.cus.SpontanoTalk.API.FilmDescription.FilmDataItem" />
+            app:argType="su.cus.spontanotalk.API.FilmDescription.FilmDataItem" />
         <action
             android:id="@+id/action_descriptionFragment_to_premiereList"
             app:destination="@id/premiereList" />
@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="su.cus.SpontanoTalk.DescriptionActivity.FirstFragment"
+        android:name="su.cus.spontanotalk.DescriptionActivity.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="su.cus.SpontanoTalk.DescriptionActivity.SecondFragment"
+        android:name="su.cus.spontanotalk.DescriptionActivity.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 

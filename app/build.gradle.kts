@@ -7,14 +7,15 @@ plugins {
     alias(libs.plugins.appDistribution)
     alias(libs.plugins.firebaseCrashlyticsGradle)
     alias(libs.plugins.perfPlaginFirebase)
+    alias(libs.plugins.googleServices)
 }
 
 android {
-    namespace = "su.cus.SpontanoTalk"
+    namespace = "su.cus.spontanotalk"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "su.cus.SpontanoTalk"
+        applicationId = "su.cus.spontanotalk"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -60,6 +61,8 @@ android {
 }
 
 dependencies {
+//    implementation(libs.firebase.core)
+//    implementation(libs.firebase.ui.database)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.boom))
     implementation(libs.facebook)

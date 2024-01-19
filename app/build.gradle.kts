@@ -61,12 +61,15 @@ android {
 }
 
 dependencies {
-//    implementation(libs.firebase.core)
+    implementation(libs.firebase.ui.firestore)
+    implementation(libs.firebase.ui.storage)
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.ui.database)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.boom))
     implementation(libs.facebook)
-    implementation(libs.firebase.ui)
+
     implementation(libs.firebase)
     androidTestImplementation(libs.mokito.kotlin)
     androidTestImplementation(libs.android.test)

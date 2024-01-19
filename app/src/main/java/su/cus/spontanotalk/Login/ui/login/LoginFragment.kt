@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.actionCodeSettings
 import kotlinx.coroutines.launch
 import su.cus.spontanotalk.R
 import su.cus.spontanotalk.StarrySkyRenderer
@@ -35,6 +36,46 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val actionCodeSettings = actionCodeSettings {
+            // URL you want to redirect back to. The domain (www.example.com) for this
+            // URL must be whitelisted in the Firebase Console.
+            url = "https://www.example.com/finishSignUp?cartId=1234"
+            // This must be true
+            handleCodeInApp = true
+            iosBundleId = "com.example.ios"
+            setAndroidPackageName(
+                "com.example.android",
+                true, // installIfNotAvailable
+                "12", // minimumVersion
+            )
+        }
+//
+//        val auth = Firebase.auth
+//        val intent = intent
+//        val emailLink = intent.data.toString()
+//
+//        // Confirm the link is a sign-in with email link.
+//        if (auth.isSignInWithEmailLink(emailLink)) {
+//            // Retrieve this from wherever you stored it
+//            val email = "someemail@domain.com"
+//
+//            // The client SDK will parse the code from the link for you.
+//            auth.signInWithEmailLink(email, emailLink)
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        Log.d(TAG, "Successfully signed in with email link!")
+//                        val result = task.result
+//                        // You can access the new user via result.getUser()
+//                        // Additional user info profile *not* available via:
+//                        // result.getAdditionalUserInfo().getProfile() == null
+//                        // You can check if the user is new or existing:
+//                        // result.getAdditionalUserInfo().isNewUser()
+//                    } else {
+//                        Log.e(TAG, "Error signing in with email link", task.exception)
+//                    }
+//                }
+//        }
 
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root

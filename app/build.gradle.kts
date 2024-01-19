@@ -62,7 +62,7 @@ android {
 
 dependencies {
 //    implementation(libs.firebase.core)
-//    implementation(libs.firebase.ui.database)
+    implementation(libs.firebase.storage)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.boom))
     implementation(libs.facebook)

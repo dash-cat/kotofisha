@@ -88,7 +88,7 @@ facebook = { group = "com.facebook.android", name = "facebook-android-sdk", vers
 #safe-args = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationFragmentKtx"}
 firebase-boom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBoom"}
 firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalitic"}
-#firebase-core = {group = "com.google.firebase", name = "firebase-core", version.ref = "firebase"}
+firebase-storage = {group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase"}
 #firebase-ui-database = {group = "com.google.firebase", name = "firebase-ui-database", version.ref = "firebaseUi"}
 
 

@@ -22,7 +22,7 @@ espresso = "3.5.1"
 ext = "1.1.5"
 robolectric = "4.11.1"
 mockk = "1.13.9"
-coroutines = "1.7.1"
+coroutines = "1.7.3"
 navigation = "2.7.6"
 parcelize = "1.9.22"
 annotation = "1.7.1"
@@ -31,6 +31,17 @@ lifecycleViewmodelKtx = "2.7.0"
 mokito = "5.9.0"
 androidTest = "1.5.0"
 mokitoKotlin = "5.2.1"
+firebase = "22.3.1"
+firebaseUi = "7.2.0"
+facebook = "8.0.0"
+saveArgs = "2.7.6"
+googleServices = "4.4.0"
+firebaseBoom = "32.7.1"
+firebaseAnalitic = "21.5.0"
+appDistribution = "4.0.1"
+firebaseCrashlyticsGradle = "2.9.9"
+perfPlaginFirebase = "1.4.2"
+playServices = "21.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -72,6 +83,16 @@ unit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref
 mokito = { group = "org.mockito", name = "mockito-android", version.ref = "mokito"}
 android-test = { group = "androidx.test", name = "core", version.ref = "androidTest"}
 mokito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mokitoKotlin"}
+firebase = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase"}
+facebook = { group = "com.facebook.android", name = "facebook-android-sdk", version.ref = "facebook"}
+firebase-boom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBoom"}
+firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalitic"}
+#firebase-storage = {group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase"}
+firebase-ui-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUi"}
+firebase-ui-database = {group = "com.firebaseui", name = "firebase-ui-database", version.ref = "firebaseUi"}
+firebase-ui-storage = {group = "com.firebaseui", name = "firebase-ui-storage", version.ref = "firebaseUi"}
+firebase-ui-firestore = {group = "com.firebaseui", name = "firebase-ui-firestore", version.ref = "firebaseUi"}
+firebase-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServices"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -79,3 +100,7 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref="serialization"}
 androidxNavigation = { id ="androidx.navigation.safeargs.kotlin", version.ref = "navigation"}
 kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize"}
+googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices"}
+appDistribution = { id = "com.google.firebase.appdistribution", version.ref = "appDistribution"}
+firebaseCrashlyticsGradle = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradle"}
+perfPlaginFirebase = { id = "com.google.firebase.firebase-perf", version.ref = "perfPlaginFirebase"}

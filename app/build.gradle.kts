@@ -4,14 +4,18 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.androidxNavigation)
     alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.appDistribution)
+    alias(libs.plugins.firebaseCrashlyticsGradle)
+    alias(libs.plugins.perfPlaginFirebase)
+    alias(libs.plugins.googleServices)
 }
 
 android {
-    namespace = "su.cus.announce"
+    namespace = "su.cus.spontanotalk"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "su.cus.announce"
+        applicationId = "su.cus.spontanotalk"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -33,12 +37,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
+
     buildFeatures {
         compose = true
         viewBinding = true
@@ -47,15 +52,26 @@ android {
         kotlinCompilerExtensionVersion = "1.5.8"
     }
 
-    packagingOptions {
-        resources.excludes.add("META-INF/*")
-    }
+//    packagingOptions {
+//        resources.excludes.add("META-INF/*")
+//    }
     buildToolsVersion = "34.0.0"
     ndkVersion = "26.1.10909125"
 
 }
 
 dependencies {
+    implementation(libs.firebase.play.services.location)
+    implementation(libs.firebase.ui.firestore)
+    implementation(libs.firebase.ui.storage)
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.ui.database)
+//    implementation(libs.firebase.storage)
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.boom))
+    implementation(libs.facebook)
+
+    implementation(libs.firebase)
     androidTestImplementation(libs.mokito.kotlin)
     androidTestImplementation(libs.android.test)
     androidTestImplementation(libs.mokito)

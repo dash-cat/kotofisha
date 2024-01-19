@@ -20,5 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Anonce"
+rootProject.name = "spontanotalk"
 include(":app")

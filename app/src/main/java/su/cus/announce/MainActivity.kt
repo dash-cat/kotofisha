@@ -25,9 +25,10 @@ class MainActivity : AppCompatActivity(), NavigationController {
 
         val fragment = supportFragmentManager.findFragmentById(id) as? NavHostFragment
 
-        if (savedInstanceState == null) {
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar()?.setTitle("Your Custom Title");
         }
+
 //            fragment?.navController?.navigate(R.id.action_to_titleScreen)
         }
 

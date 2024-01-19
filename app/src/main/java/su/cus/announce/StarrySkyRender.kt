@@ -66,17 +66,20 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
     }
 
     private fun drawStar(star: Star) {
-        val starVertices = floatArrayOf(star.x, star.y, 0.0f)
+        val starVertices = floatArrayOf(star.x, star.y, 0.0f, star.alpha)
         vertexBuffer.clear()
         vertexBuffer.put(starVertices)
         vertexBuffer.position(0)
 
         val positionHandle = GLES20.glGetAttribLocation(program, "vPosition")
         GLES20.glEnableVertexAttribArray(positionHandle)
-        GLES20.glVertexAttribPointer(positionHandle, 3, GLES20.GL_FLOAT, false, 12, vertexBuffer)
+        GLES20.glVertexAttribPointer(positionHandle, 4, GLES20.GL_FLOAT, false, 16, vertexBuffer)
+
         GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 1)
+
         GLES20.glDisableVertexAttribArray(positionHandle)
     }
+
 
     private fun setupStarBuffer() {
         vertexBuffer = ByteBuffer.allocateDirect(numStars * 3 * 4)
@@ -103,28 +106,37 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
     companion object {
         private val vertexShaderCode = """
             attribute vec4 vPosition;
+            varying float vAlpha;
             void main() {
-                gl_Position = vPosition;
+                gl_Position = vec4(vPosition.xy, 0.0, 1.0);
                 gl_PointSize = 2.0;
+                vAlpha = vPosition.w;
             }
         """.trimIndent()
 
         private val fragmentShaderCode = """
             precision mediump float;
+            varying float vAlpha;
             void main() {
-                gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+                gl_FragColor = vec4(1.0, 1.0, 1.0, vAlpha);
             }
         """.trimIndent()
     }
 }
 
-class Star(var x: Float, var y: Float, var speed: Float) {
+class Star(var x: Float, var y: Float, var speed: Float, var alpha: Float = 1.0f) {
     fun updatePosition() {
         x -= x * speed
         y -= y * speed
+        alpha = ((Math.random() * 0.5) + 0.5).toFloat() // Random alpha between 0.5 and 1.0
         if (Math.abs(x) < 0.01f && Math.abs(y) < 0.01f) {
-            x = Math.random().toFloat() * 2 - 1
-            y = Math.random().toFloat() * 2 - 1
+            resetStar()
         }
+    }
+
+    private fun resetStar() {
+        x = Math.random().toFloat() * 2 - 1
+        y = Math.random().toFloat() * 2 - 1
+        alpha = 1.0f
     }
 }

@@ -9,12 +9,12 @@
         android:id="@+id/glSurfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="-10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="-10dp"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
@@ -24,6 +24,7 @@
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
+        android:textColorHint="@color/light_blue_50"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -41,6 +42,7 @@
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
+        android:textColorHint="@color/light_blue_50"
         app:layout_constraintBottom_toTopOf="@+id/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -50,13 +52,20 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginEnd="124dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="140dp"
+        android:background="@drawable/rounded_button"
+        android:clickable="true"
+        android:elevation="10dp"
         android:enabled="false"
-        android:gravity="center"
-        android:text="@string/action_sign_in"
-        app:layout_constraintBottom_toTopOf="@+id/returnToTitleButton"
-        app:layout_constraintEnd_toEndOf="@+id/glSurfaceView"
-        app:layout_constraintHorizontal_bias="0.436"
+        android:focusable="true"
+        android:text="Вход"
+        android:textColor="@color/light_blue_50"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/glSurfaceView"
+        app:layout_constraintEnd_toStartOf="@+id/returnToTitleButton"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
@@ -74,10 +83,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
+        android:background="@drawable/rounded_button"
         android:clickable="true"
         android:focusable="true"
         android:text="назад"
         android:textColor="@color/white"
+        android:textColorHighlight="#DF1616"
         android:textColorLink="@color/light_blue_200"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/glSurfaceView"
@@ -85,7 +96,7 @@
         app:layout_constraintHorizontal_bias="0.823"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.982" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

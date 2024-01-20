@@ -14,8 +14,12 @@ class FireBaseAuthService(
     fun checkAuth() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            reload()
+//            reload()
         }
+    }
+
+    override fun isSignedIn(): Boolean {
+        return auth.currentUser != null
     }
 
     override suspend fun signUp(email: String, password: String): IUser {
@@ -26,7 +30,8 @@ class FireBaseAuthService(
         } ?: throw Exception("Sign up failed")
     }
 
-    private fun reload() {
+    override fun signOut() {
+        auth.signOut()
     }
 
     companion object {

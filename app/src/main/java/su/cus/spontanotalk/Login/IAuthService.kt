@@ -4,6 +4,8 @@ import com.google.firebase.auth.FirebaseUser
 
 interface IAuthService {
     suspend fun signUp(email: String, password: String): IUser
+    fun isSignedIn(): Boolean
+    fun signOut()
 }
 
 class FirebaseUserWrapper( // XXX move

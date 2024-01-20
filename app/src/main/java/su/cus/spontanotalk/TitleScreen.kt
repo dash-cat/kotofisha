@@ -1,6 +1,7 @@
 package su.cus.spontanotalk
 
 import android.animation.ValueAnimator
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +9,22 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.android.ext.android.inject
+import su.cus.spontanotalk.Login.IAuthService
 import su.cus.spontanotalk.databinding.TitleScreenBinding
 
 class TitleScreen : Fragment() {
 
     private lateinit var binding: TitleScreenBinding
-
+    private val authService: IAuthService by inject()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = TitleScreenBinding.inflate(inflater, container, false)
+        updateButtonBasedOnAuthState()
+
         return binding.root
     }
 
@@ -28,6 +33,28 @@ class TitleScreen : Fragment() {
 
        animatedButton()
     }
+    private fun updateButtonBasedOnAuthState() {
+        if (authService.isSignedIn()) {
+
+            binding.loginButton.text = "Выход"
+        } else {
+            // Пользователь не вошел
+            binding.loginButton.text = "Вход"
+        }
+    }
+    private fun showSignOutConfirmationDialog() {
+        AlertDialog.Builder(context)
+            .setTitle("Подтверждение выхода")
+            .setMessage("Вы действительно хотите выйти?")
+            .setPositiveButton("Да") { dialog, which ->
+                authService.signOut()
+                findNavController().navigate(R.id.action_titleScreen_to_loginPage)
+                updateButtonBasedOnAuthState()
+            }
+            .setNegativeButton("Нет", null)
+            .show()
+    }
+
 
     private fun animatedButton() {
         val welcomeButton = binding.welcomeButton
@@ -50,8 +77,13 @@ class TitleScreen : Fragment() {
         loginButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
 
         loginButton.setOnClickListener{
-            findNavController().navigate(R.id.action_titleScreen_to_loginPage)
+            if (authService.isSignedIn()) {
+                showSignOutConfirmationDialog()
+            } else {
+                findNavController().navigate(R.id.action_titleScreen_to_loginPage)
+            }
         }
+
         // Анимация начинается автоматически, когда фрагмент становится видимым
         val colorAnimation = ValueAnimator.ofArgb(
             ContextCompat.getColor(requireContext(), R.color.colorPrimary),

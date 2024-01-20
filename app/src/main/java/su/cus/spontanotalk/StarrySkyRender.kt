@@ -8,10 +8,11 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.math.sqrt
 
 class StarrySkyRenderer : GLSurfaceView.Renderer {
     private val stars = mutableListOf<Star>()
-    private val numStars = 100 // Number of stars
+    private val numStars = 1000 // Number of stars
 
     private lateinit var vertexBuffer: FloatBuffer
     private var program: Int = 0
@@ -43,11 +44,7 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
 
         // Initialize stars
         for (i in 0 until numStars) {
-            stars.add(Star(
-                x = Math.random().toFloat() * 2 - 1, // Random X in [-1, 1]
-                y = Math.random().toFloat() * 2 - 1, // Random Y in [-1, 1]
-                speed = Math.random().toFloat() * 0.01f // Random speed
-            ))
+            spawnStar()
         }
     }
 
@@ -65,8 +62,17 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
         }
     }
 
+    private fun spawnStar() {
+        stars.add(Star(
+            x = (Math.random().toFloat() * 2 - 1) / 8, // Random X in [-1, 1]
+            y = (Math.random().toFloat() * 2 - 1) / 8, // Random Y in [-1, 1]
+            speed = Math.random().toFloat() * 0.01f // Random speed
+        ))
+    }
+
     private fun drawStar(star: Star) {
         val starVertices = floatArrayOf(star.x, star.y, 0.0f, star.alpha)
+
         vertexBuffer.clear()
         vertexBuffer.put(starVertices)
         vertexBuffer.position(0)
@@ -109,7 +115,7 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
             varying float vAlpha;
             void main() {
                 gl_Position = vec4(vPosition.xy, 0.0, 1.0);
-                gl_PointSize = 2.0;
+                gl_PointSize = 10.0;
                 vAlpha = vPosition.w;
             }
         """.trimIndent()
@@ -126,10 +132,10 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
 
 class Star(var x: Float, var y: Float, var speed: Float, var alpha: Float = 1.0f) {
     fun updatePosition() {
-        x -= x * speed
-        y -= y * speed
+        x += x * speed
+        y += y * speed
         alpha = ((Math.random() * 0.5) + 0.5).toFloat() // Random alpha between 0.5 and 1.0
-        if (Math.abs(x) < 0.01f && Math.abs(y) < 0.01f) {
+        if (sqrt(x * x + y * y) > 50) {
             resetStar()
         }
     }

@@ -18,6 +18,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import su.cus.spontanotalk.ISignUpOpener
 import su.cus.spontanotalk.R
 import su.cus.spontanotalk.StarrySkyRenderer
 import su.cus.spontanotalk.databinding.FragmentLoginBinding
@@ -28,7 +30,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private lateinit var glSurfaceView: GLSurfaceView
     private var gso: GoogleSignInOptions? = null
-
+    private val signUpOpener: ISignUpOpener by inject()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -60,6 +62,10 @@ class LoginFragment : Fragment() {
 
         binding.login.setOnClickListener {
             login()
+        }
+
+        binding.signInWithGoogle.setOnClickListener {
+            signUpOpener.openSignUp()
         }
 
         binding.password.setOnEditorActionListener { _, actionId, _ ->
@@ -129,6 +135,11 @@ class LoginFragment : Fragment() {
                 binding.password.text.toString()
             )
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        
     }
 
     private fun signIn() {

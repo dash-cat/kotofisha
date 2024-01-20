@@ -2,6 +2,9 @@ package su.cus.spontanotalk.Login.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import su.cus.spontanotalk.Login.FireBaseAuthService
 import su.cus.spontanotalk.Login.data.LoginDataSource
 import su.cus.spontanotalk.Login.data.LoginRepository
 
@@ -17,6 +20,10 @@ class LoginViewModelFactory : ViewModelProvider.Factory {
             return LoginViewModel(
                 loginRepository = LoginRepository(
                     dataSource = LoginDataSource()
+                ),
+                authService = FireBaseAuthService(
+                    Firebase.auth,
+                    null
                 )
             ) as T
         }

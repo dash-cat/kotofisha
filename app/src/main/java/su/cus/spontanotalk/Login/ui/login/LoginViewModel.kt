@@ -6,11 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import su.cus.spontanotalk.Login.IAuthService
 import su.cus.spontanotalk.Login.data.LoginRepository
 import su.cus.spontanotalk.Login.data.Result
 import su.cus.spontanotalk.R
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel(
+    private val loginRepository: LoginRepository,
+    private val authService: IAuthService
+) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm

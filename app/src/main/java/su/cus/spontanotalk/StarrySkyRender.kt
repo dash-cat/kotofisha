@@ -2,6 +2,7 @@ package su.cus.spontanotalk
 
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
+import android.opengl.Matrix
 import android.util.Log
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -14,9 +15,19 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
     private val numStars = 500 // Number of stars
     private var time = 0f
 
+    private val viewMatrix = FloatArray(16)
+    private val projectionMatrix = FloatArray(16)
+    private val viewProjectionMatrix = FloatArray(16)
+
     private lateinit var vertexBuffer: FloatBuffer
     private var program: Int = 0
-
+    private fun checkGlError(op: String) {
+        val error = GLES20.glGetError()
+        if (error != GLES20.GL_NO_ERROR) {
+            Log.e("GLRenderer", "$op: glError $error")
+            throw RuntimeException("$op: glError $error")
+        }
+    }
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
         setupStarBuffer()
@@ -24,66 +35,81 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
         val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
         val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
 
-        // Create OpenGL program and attach shaders
+
         program = GLES20.glCreateProgram().also {
             GLES20.glAttachShader(it, vertexShader)
             GLES20.glAttachShader(it, fragmentShader)
             GLES20.glLinkProgram(it)
-
-            // Check for linking errors
-            val linkStatus = IntArray(1)
-            GLES20.glGetProgramiv(it, GLES20.GL_LINK_STATUS, linkStatus, 0)
-            if (linkStatus[0] == 0) {
-                Log.e("GLRenderer", "Error linking program: " + GLES20.glGetProgramInfoLog(it))
-                GLES20.glDeleteProgram(it)
-                return
-            }
+            checkGlError("glLinkProgram")
         }
 
         GLES20.glUseProgram(program)
+        checkGlError("glUseProgram")
 
-        // Initialize stars
-        for (i in 0 until numStars) {
+        for (i in 0 until numStars ) {
             spawnStar()
         }
     }
 
+
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         GLES20.glViewport(0, 0, width, height)
+
+        val ratio: Float = width.toFloat() / height.toFloat()
+        Matrix.perspectiveM(projectionMatrix, 0, 45f, ratio, 0.1f, 100f)
     }
-
     override fun onDrawFrame(gl: GL10?) {
-        time += 0.2f // Меняйте это значение для регулировки скорости анимации
+        time += 0.02f
+        val cameraZ = 1f - time * 0.1f
 
-        val uTimeLocation = GLES20.glGetUniformLocation(program, "uTime")
-        GLES20.glUniform1f(uTimeLocation, time)
+        Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, cameraZ, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
+        Matrix.multiplyMM(viewProjectionMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
-        // Draw stars
-        stars.forEach { star ->
-            star.updatePosition()
+        // Добавляем новые звёзды если нужно
+        while (stars.size < numStars) {
+            spawnStar()
+        }
+
+        val iterator = stars.iterator()
+        while (iterator.hasNext()) {
+            val star = iterator.next()
+            star.updatePosition(time)
             drawStar(star)
+
+            // Удаляем звёзды, которые стали слишком маленькими или достигли центра
+            if (star.radius < 0.01f || star.pointSize < 0.5f) {
+                iterator.remove()
+            }
         }
     }
 
+
+
+
+
+
     private fun spawnStar() {
-        val intensity = Math.random().toFloat() * 0.5f + 0.5f // Интенсивность цвета от 0.5 до 1.0
+        val intensity = Math.random().toFloat() * 0.5f + 0.5f
         val color = FloatArray(3).apply {
             this[0] = intensity // Red
             this[1] = intensity // Green
             this[2] = intensity // Blue
         }
-        stars.add(Star(
-            x = (Math.random().toFloat() * 2 - 1),
-            y = (Math.random().toFloat() * 2 - 1),
-            speed = Math.random().toFloat() * 0.01f,
-            color = color,
-            pointSize = Math.random().toFloat() * 5 + 2 // Размер точки от 2 до 7
-        ))
+        val angle = Math.random().toFloat() * 2 * Math.PI.toFloat()
+        val initialRadius = Math.random().toFloat() * 0.2f + 0.1f // Начальный радиус от 0.1 до 0.3
+
+        stars.add(
+            Star(
+                radius = initialRadius,
+                angle = angle,
+                speed = Math.random().toFloat() * 0.05f + 0.02f,
+                color = color,
+                pointSize = Math.random().toFloat() * 3 + 1
+            )
+        )
     }
-
-
 
 
     // В методе drawStar, исправьте использование vertexAttribPointer
@@ -98,9 +124,15 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
             star.color[2],
             star.pointSize
         )
+        // Применение матрицы трансформации
+        val finalPosition = FloatArray(4)
+        Matrix.multiplyMV(finalPosition, 0, viewProjectionMatrix, 0, starVertices, 0)
 
+        // Использование finalPosition для отрисовки звезды
         vertexBuffer.clear()
-        vertexBuffer.put(starVertices)
+        vertexBuffer.put(finalPosition, 0, 4) // Только координаты x, y, z, w
+        vertexBuffer.put(star.color) // Добавление цвета
+        vertexBuffer.put(star.pointSize) // Добавление размера точки
         vertexBuffer.position(0)
 
         val stride = 8 * 4 // Количество байтов на одну вершину (x, y, z, w, r, g, b, pointSize)
@@ -139,6 +171,10 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
         )
 
         GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 1)
+        if (GLES20.glGetError() != GLES20.GL_NO_ERROR) {
+            Log.e("GLRenderer", "Ошибка при отрисовке звезд")
+        }
+
 
         GLES20.glDisableVertexAttribArray(positionHandle)
         GLES20.glDisableVertexAttribArray(colorHandle)
@@ -189,43 +225,31 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
             precision mediump float;
             varying vec4 fColor;
             void main() {
-                float distance = length(gl_PointCoord - vec2(0.5, 0.5));
-                float alpha = 1.0 - smoothstep(0.0, 0.5, distance);
+            float distance = length(gl_PointCoord - vec2(0.5, 0.5));
+            float alpha = 1.0 - smoothstep(0.0, 0.5, distance);
         
-                vec3 rainbowColor = vec3(0.0);
-                rainbowColor.r = 0.5 + 0.5 * cos(distance * 6.28318 + 0.0);
-                rainbowColor.g = 0.5 + 0.5 * cos(distance * 6.28318 + 2.09439);
-                rainbowColor.b = 0.5 + 0.5 * cos(distance * 6.28318 + 4.18879);
+            vec3 rainbowColor = vec3(0.0);
+            rainbowColor.r = 0.5 + 0.5 * cos(distance * 12.56636 + 0.0);
+            rainbowColor.g = 0.5 + 0.5 * cos(distance * 12.56636 + 2.09439);
+            rainbowColor.b = 0.5 + 0.5 * cos(distance * 12.56636 + 4.18879);
         
-                vec3 finalColor = mix(fColor.rgb, rainbowColor, 0.5); // Смешиваем основной цвет звезды с радужным цветом
+            vec3 finalColor = mix(fColor.rgb, rainbowColor, 0.3); // Уменьшите коэффициент смешивания для более тонкого радужного эффекта
         
-                gl_FragColor = vec4(finalColor, alpha);
-            }
+            gl_FragColor = vec4(finalColor, alpha);
+        }
         """.trimIndent()
     }
+}
+class Star(var radius: Float, var angle: Float, var speed: Float, val color: FloatArray, var pointSize: Float = 10f) {
+    var x: Float = Math.cos(angle.toDouble()).toFloat() * radius
+    var y: Float = Math.sin(angle.toDouble()).toFloat() * radius
 
-    class Star(
-        var x: Float,
-        var y: Float,
-        var speed: Float,
-        val color: FloatArray,
-        var pointSize: Float = 10f
-    ) {
-        fun updatePosition() {
-            x += speed
-            y += speed
-
-            // Проверка границ и сброс позиции
-            if (x > 1f || y > 1f || x < -1f || y < -1f) {
-                resetStar()
-            }
-        }
-
-        private fun resetStar() {
-            x = Math.random().toFloat() * 2 - 1
-            y = Math.random().toFloat() * 2 - 1
-            speed = Math.random().toFloat() * 0.01f
-            pointSize = Math.random().toFloat() * 5 + 2 // Случайный размер от 2 до 7
-        }
+    fun updatePosition(time: Float) {
+        angle += speed
+        radius *= (0.99f - time * 0.0005f)
+        x = Math.cos(angle.toDouble()).toFloat() * radius
+        y = Math.sin(angle.toDouble()).toFloat() * radius
+        pointSize = Math.max(pointSize * (1f - time * 0.0005f), 1f)
     }
 }
+

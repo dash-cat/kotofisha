@@ -1,7 +1,5 @@
 <resources>
-
     <style name="Widget.Anonce.AppWidget.Container" parent="android:Widget">
-        <item name="android:id">@android:id/background</item>
         <item name="android:background">?android:attr/colorBackground</item>
     </style>
 
@@ -9,10 +7,33 @@
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
+
     <style name="CustomRatingBar" parent="@style/Widget.AppCompat.RatingBar.Indicator">
-<!--        <item name="android:progressDrawable">@drawable/custom_ratingbar</item>-->
-        <item name="android:minHeight">8dp</item> <!-- Star size when not filled -->
-        <item name="android:maxHeight">12dp</item> <!-- Star size when filled -->
+        <item name="android:minHeight">16dp</item>
+        <item name="android:maxHeight">24dp</item>
     </style>
 
+    <style name="loginField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/textColorHint</item>
+        <item name="android:background">@drawable/input_field_background</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:fontFamily">@font/my_custom_font</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">24dp</item> <!-- Replace paddingHorizontal with paddingLeft -->
+        <item name="android:paddingRight">24dp</item> <!-- Replace paddingHorizontal with paddingRight -->
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="cornerRadius">4dp</item>
+    </style>
 </resources>

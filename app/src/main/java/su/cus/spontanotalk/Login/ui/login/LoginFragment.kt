@@ -68,7 +68,7 @@ class LoginFragment : Fragment() {
             signUpOpener.openSignUp()
         }
 
-        binding.password.setOnEditorActionListener { _, actionId, _ ->
+        binding.textPassword.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 login()
             }
@@ -87,12 +87,12 @@ class LoginFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {
                 loginViewModel.loginDataChanged(
                     binding.username.text.toString(),
-                    binding.password.text.toString()
+                    binding.textPassword.text.toString()
                 )
             }
         }
         binding.username.addTextChangedListener(afterTextChangedListener)
-        binding.password.addTextChangedListener(afterTextChangedListener)
+        binding.textPassword.addTextChangedListener(afterTextChangedListener)
     }
 
     private fun initObservers() {
@@ -111,7 +111,7 @@ class LoginFragment : Fragment() {
                 binding.username.error = getString(it)
             }
             loginFormState.passwordError?.let {
-                binding.password.error = getString(it)
+                binding.textPassword.error = getString(it)
             }
         }
 
@@ -132,7 +132,7 @@ class LoginFragment : Fragment() {
         lifecycleScope.launch {
             loginViewModel.login(
                 binding.username.text.toString(),
-                binding.password.text.toString()
+                binding.textPassword.text.toString()
             )
         }
     }

@@ -9,10 +9,11 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import kotlin.random.Random
 
 class StarrySkyRenderer : GLSurfaceView.Renderer {
     private val stars = mutableListOf<Star>()
-    private val numStars = 1000
+    private val numStars = 500
     private var time = 0f
 
     private val viewMatrix = FloatArray(16)
@@ -25,6 +26,8 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
     private var positionHandle: Int = 0
     private var colorHandle: Int = 0
     private var pointSizeHandle: Int = 0
+
+    private val random = Random(System.currentTimeMillis()) // Initialize random generator
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig?) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
@@ -64,6 +67,13 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
         refreshStars()
         stars.forEach { drawStar(it) }
+
+        stars.forEach {
+            it.updatePosition(time)
+            if (it.isActive) {
+                drawStar(it)
+            }
+        }
     }
 
     private fun refreshStars() {
@@ -72,39 +82,46 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
     }
 
     private fun spawnStar() {
-        val intensity = (Math.random() * 0.5f + 0.5f).toFloat()
-        val color = floatArrayOf(intensity, intensity, intensity)
-        val angle = (Math.random() * 2 * Math.PI).toFloat()
-        val initialRadius = (Math.random() * 0.2f + 0.1f).toFloat()
+        val baseIntensity = (random.nextDouble() * 0.5f + 0.5f).toFloat()
+        val baseColor = floatArrayOf(baseIntensity, baseIntensity, baseIntensity)
+        val angle = (random.nextDouble() * 2 * Math.PI).toFloat()
+        val initialRadius = (random.nextDouble() * 0.2f + 0.1f).toFloat()
 
-        stars.add(Star(initialRadius, angle, (Math.random() * 0.05f + 0.02f).toFloat(), color, (Math.random() * 3 + 1).toFloat()))
+        stars.add(
+            Star(
+                radius = initialRadius,
+                angle = angle,
+                speed = (random.nextDouble() * 0.05f + 0.02f).toFloat(),
+                baseColor = baseColor,
+                twinkleFactor = random.nextFloat(),
+                pointSize = (random.nextDouble() * 3 + 1).toFloat()
+            )
+        )
     }
 
     private fun drawStar(star: Star) {
+        if (!star.isActive) return // Skip drawing if the star is not active
+
         star.updatePosition(time)
-        val starVertices = floatArrayOf(star.x, star.y, 0f, 1f, star.color[0], star.color[1], star.color[2], star.pointSize)
+        val starVertices = floatArrayOf(
+            star.x, star.y, 0f, 1f, // Position
+            star.currentColor[0], star.currentColor[1], star.currentColor[2], // Color
+            star.pointSize // Point size
+        )
 
         val finalPosition = FloatArray(4).also {
             Matrix.multiplyMV(it, 0, viewProjectionMatrix, 0, starVertices, 0)
         }
 
         vertexBuffer.clear()
-        vertexBuffer.put(finalPosition, 0, 4)
-        vertexBuffer.put(star.color)
-        vertexBuffer.put(star.pointSize)
+        vertexBuffer.put(finalPosition, 0, 4) // Position
+        vertexBuffer.put(star.currentColor, 0, 3) // Color
+        vertexBuffer.put(star.pointSize) // Point size
         vertexBuffer.position(0)
 
-        val stride = 8 * 4
-        GLES20.glVertexAttribPointer(positionHandle, 4, GLES20.GL_FLOAT, false, stride, vertexBuffer)
-        GLES20.glEnableVertexAttribArray(positionHandle)
-
-        vertexBuffer.position(4)
-        GLES20.glVertexAttribPointer(colorHandle, 3, GLES20.GL_FLOAT, false, stride, vertexBuffer)
-        GLES20.glEnableVertexAttribArray(colorHandle)
-
-        vertexBuffer.position(7)
-        GLES20.glVertexAttribPointer(pointSizeHandle, 1, GLES20.GL_FLOAT, false, stride, vertexBuffer)
-        GLES20.glEnableVertexAttribArray(pointSizeHandle)
+        setVertexAttribPointerAndEnable(positionHandle, 4, 0)
+        setVertexAttribPointerAndEnable(colorHandle, 3, 4)
+        setVertexAttribPointerAndEnable(pointSizeHandle, 1, 7)
 
         GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 1)
         checkGlError("drawStar")
@@ -112,6 +129,11 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
         GLES20.glDisableVertexAttribArray(positionHandle)
         GLES20.glDisableVertexAttribArray(colorHandle)
         GLES20.glDisableVertexAttribArray(pointSizeHandle)
+    }
+
+    private fun setVertexAttribPointerAndEnable(handle: Int, size: Int, offset: Int) {
+        GLES20.glVertexAttribPointer(handle, size, GLES20.GL_FLOAT, false, 8 * 4, vertexBuffer.position(offset))
+        GLES20.glEnableVertexAttribArray(handle)
     }
 
     private fun setupStarBuffer() {
@@ -134,6 +156,7 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
             GLES20.glDeleteShader(shader)
         }
     }
+
     private fun checkGlError(op: String) {
         val error = GLES20.glGetError()
         if (error != GLES20.GL_NO_ERROR) {
@@ -172,16 +195,56 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
     }
 }
 
-class Star(var radius: Float, var angle: Float, var speed: Float, val color: FloatArray, var pointSize: Float = 10f) {
+
+class Star(
+    var radius: Float,
+    var angle: Float,
+    var speed: Float,
+    private val baseColor: FloatArray, // Use a base color to preserve the original color
+    private val twinkleFactor: Float,
+    var pointSize: Float = 10f,
+    var isActive: Boolean = true,
+    private var brightness: Float = 1f
+) {
     var x: Float = kotlin.math.cos(angle) * radius
     var y: Float = kotlin.math.sin(angle) * radius
+    var currentColor: FloatArray = baseColor.copyOf() // Current color, affected by brightness and twinkle
 
     fun updatePosition(time: Float) {
+        updateMovement(time)
+        updateBrightness()
+        updateTwinkle()
+        updateActiveState()
+    }
+
+    private fun updateMovement(time: Float) {
         angle += speed
         radius *= (0.99f - time * 0.0005f)
         x = kotlin.math.cos(angle) * radius
         y = kotlin.math.sin(angle) * radius
         pointSize = kotlin.math.max(pointSize * (1f - time * 0.0005f), 1f)
+    }
+
+    private fun updateBrightness() {
+        if (Math.random() < 0.01) { // 1% chance to modify brightness
+            val brightnessChange = 0.1f
+            brightness += if (Math.random() < 0.5) -brightnessChange else brightnessChange
+            brightness = kotlin.math.max(0f, kotlin.math.min(brightness, 1f))
+        }
+        currentColor = baseColor.map { it * brightness }.toFloatArray()
+    }
+
+    private fun updateTwinkle() {
+        val twinkleAdjustment = (Math.random() * twinkleFactor * 2 - twinkleFactor).toFloat()
+        currentColor = currentColor.map {
+            kotlin.math.max(0f, kotlin.math.min(it + twinkleAdjustment, 1f))
+        }.toFloatArray()
+    }
+
+    private fun updateActiveState() {
+        if (Math.random() < 0.01) { // 1% chance to change active state
+            isActive = !isActive
+        }
     }
 }
 

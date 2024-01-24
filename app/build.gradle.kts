@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.animation)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.media3.common)
     androidTestImplementation(libs.mokito.kotlin)
     androidTestImplementation(libs.android.test)
     androidTestImplementation(libs.mokito)

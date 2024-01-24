@@ -185,10 +185,10 @@ class StarrySkyRenderer : GLSurfaceView.Renderer {
                 float distance = length(gl_PointCoord - vec2(0.5, 0.5));
                 float alpha = 1.0 - smoothstep(0.0, 0.5, distance);
                 vec3 rainbowColor = vec3(0.0);
-                rainbowColor.r = 0.5 + 0.5 * cos(distance * 12.56636 + 0.0);
+                rainbowColor.r = 0.5 + 0.5 * cos(distance * 12.56636 + 0.5);
                 rainbowColor.g = 0.5 + 0.5 * cos(distance * 12.56636 + 2.09439);
                 rainbowColor.b = 0.5 + 0.5 * cos(distance * 12.56636 + 4.18879);
-                vec3 finalColor = mix(fColor.rgb, rainbowColor, 0.3);
+                vec3 finalColor = mix(fColor.rgb, rainbowColor, 0.4);
                 gl_FragColor = vec4(finalColor, alpha);
             }
         """.trimIndent()
@@ -202,7 +202,7 @@ class Star(
     var speed: Float,
     private val baseColor: FloatArray, // Use a base color to preserve the original color
     private val twinkleFactor: Float,
-    var pointSize: Float = 10f,
+    var pointSize: Float = 15f,
     var isActive: Boolean = true,
     private var brightness: Float = 1f
 ) {
@@ -218,11 +218,11 @@ class Star(
     }
 
     private fun updateMovement(time: Float) {
-        angle += speed
-        radius *= (0.99f - time * 0.0005f)
+        angle += speed / 4
+        radius *= (0.99f - time * 0.05f)
         x = kotlin.math.cos(angle) * radius
         y = kotlin.math.sin(angle) * radius
-        pointSize = kotlin.math.max(pointSize * (1f - time * 0.0005f), 1f)
+        pointSize = kotlin.math.max(pointSize * (1f - time * 0.9f), 3f)
     }
 
     private fun updateBrightness() {

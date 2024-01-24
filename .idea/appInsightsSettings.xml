@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="su.cus.spontanotalk" />
+                  <option name="mobileSdkAppId" value="1:49842161563:android:089a0ccd9a8cc6800f433e" />
+                  <option name="projectId" value="spontanotalk" />
+                  <option name="projectNumber" value="49842161563" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

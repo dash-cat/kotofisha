@@ -2,6 +2,7 @@ package su.cus.spontanotalk
 
 import android.animation.ValueAnimator
 import android.app.AlertDialog
+import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +15,10 @@ import su.cus.spontanotalk.Login.IAuthService
 import su.cus.spontanotalk.databinding.TitleScreenBinding
 
 class TitleScreen : Fragment() {
-
+    private var rendererSet = false
     private lateinit var binding: TitleScreenBinding
     private val authService: IAuthService by inject()
+    private lateinit var glSurfaceView: GLSurfaceView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +34,25 @@ class TitleScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
        animatedButton()
+        initViews()
+    }
+    private fun initViews() {
+        glSurfaceView = binding.glSurfz
+        glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
+        glSurfaceView.setRenderer(MickeyRender())
+    }
+    override fun onPause() {
+        super.onPause()
+        if (rendererSet) {
+            glSurfaceView.onPause()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (rendererSet) {
+            glSurfaceView.onResume()
+        }
     }
     private fun updateButtonBasedOnAuthState() {
         if (authService.isSignedIn()) {
@@ -98,4 +119,5 @@ class TitleScreen : Fragment() {
         colorAnimation.start()
 
     }
+
 }

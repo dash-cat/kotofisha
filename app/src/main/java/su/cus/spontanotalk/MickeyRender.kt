@@ -8,7 +8,6 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import javax.microedition.khronos.opengles.GL10
 
-
 class MickeyRender : GLSurfaceView.Renderer {
     private var program: Int = 0
     private var timeUniform: Int = 0
@@ -17,21 +16,22 @@ class MickeyRender : GLSurfaceView.Renderer {
     private val vertices = floatArrayOf(
         -1f, -1f, 0f,  // bottom left
         1f, -1f, 0f,  // bottom right
-        -1f,  1f, 0f,  // top left
-        1f,  1f, 0f   // top right
+        -1f, 1f, 0f,  // top left
+        1f, 1f, 0f   // top right
     )
 
-    private lateinit var vertexBuffer: FloatBuffer
-    override fun onSurfaceCreated(gl: GL10?, config: javax.microedition.khronos.egl.EGLConfig?) {
-        startTime = System.currentTimeMillis()
+    private val vertexBuffer: FloatBuffer
 
+    init {
         vertexBuffer = ByteBuffer.allocateDirect(vertices.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
             .put(vertices)
         vertexBuffer.position(0)
+    }
 
-
+    override fun onSurfaceCreated(gl: GL10?, config: javax.microedition.khronos.egl.EGLConfig?) {
+        startTime = System.currentTimeMillis()
 
         program = GLES20.glCreateProgram().also {
             GLES20.glAttachShader(it, loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode))
@@ -68,7 +68,6 @@ class MickeyRender : GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
         GLES20.glUseProgram(program)
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
-
     }
 
     private fun loadShader(type: Int, shaderCode: String): Int {
@@ -86,10 +85,7 @@ class MickeyRender : GLSurfaceView.Renderer {
         }
         return shader
     }
-
-
 }
-
 
 private const val vertexShaderCode = """
     attribute vec4 aPosition;

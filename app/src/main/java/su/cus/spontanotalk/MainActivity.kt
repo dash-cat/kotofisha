@@ -9,7 +9,6 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import su.cus.spontanotalk.databinding.ActivityMainBinding
 
 
 interface NavigationController {
@@ -25,7 +24,6 @@ interface ISignUpOpener {
 
 class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
 
-    private lateinit var binding: ActivityMainBinding
     companion object {
         private const val RC_SIGN_IN = 123
         var instance: MainActivity? = null

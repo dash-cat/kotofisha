@@ -43,16 +43,12 @@ class TitleScreen : Fragment() {
     }
     override fun onPause() {
         super.onPause()
-        if (rendererSet) {
             glSurfaceView.onPause()
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (rendererSet) {
             glSurfaceView.onResume()
-        }
     }
     private fun updateButtonBasedOnAuthState() {
         if (authService.isSignedIn()) {
@@ -79,21 +75,31 @@ class TitleScreen : Fragment() {
 
     private fun animatedButton() {
         val welcomeButton = binding.welcomeButton
+        val buttonCarouselLayout = binding.buttonCarouselLayout
         welcomeButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
 
         welcomeButton.setOnClickListener {
-            val colorAnimation = ValueAnimator.ofArgb(
-                ContextCompat.getColor(requireContext(), R.color.colorPrimary),
-                ContextCompat.getColor(requireContext(), R.color.colorAccent)
-            )
-            colorAnimation.duration = 2000 // Duration in milliseconds
-            colorAnimation.addUpdateListener { animator ->
-                welcomeButton.setBackgroundColor(animator.animatedValue as Int)
-            }
-            colorAnimation.start()
+            // Скрываем стартовую кнопку
+            welcomeButton.visibility = View.GONE
+            // Отображаем карусель с другими кнопками
+            buttonCarouselLayout.visibility = View.VISIBLE
             findNavController().navigate(R.id.action_titleScreen_to_premiereList)
         }
 
+        // Для каждой кнопки карусели можно установить свой обработчик нажатия
+        binding.button1.setOnClickListener {
+            // Обработка нажатия кнопки 1
+        }
+
+        binding.button2.setOnClickListener {
+            // Обработка нажатия кнопки 2
+        }
+
+        binding.button3.setOnClickListener {
+            // Обработка нажатия кнопки 3
+        }
+
+        //        findNavController().navigate(R.id.action_titleScreen_to_premiereList)
         val loginButton = binding.loginButton
         loginButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
 

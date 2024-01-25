@@ -25,8 +25,11 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_titleScreen"
+            android:id="@+id/action_loginFragment_to_titleFragment"
             app:destination="@id/titleScreen" />
+        <action
+                android:id="@+id/action_loginFragment_to_homeFragment"
+                app:destination="@id/homeFragment"/>
     </fragment>
 
     <fragment
@@ -49,6 +52,10 @@
         <action
             android:id="@+id/action_descriptionFragment_to_premiereList"
             app:destination="@id/premiereList" />
+    </fragment>
+    <fragment android:id="@+id/homeFragment" android:name="su.cus.spontanotalk.HomeFragment"
+              android:label="fragment_home" tools:layout="@layout/fragment_home">
+        <action android:id="@+id/action_homeFragment_to_loginFragment" app:destination="@id/loginFragment"/>
     </fragment>
 
 

@@ -35,18 +35,9 @@
         android:hint="@string/prompt_password"
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@+id/glSurfaceView"/>
 
-    <!-- Login Button -->
-    <Button
-        android:id="@+id/login"
-        style="@style/ButtonStyle"
-        android:text="Вход"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/loading"
         style="@style/Widget.AppCompat.ProgressBar"
@@ -58,36 +49,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Return To Title Button -->
+    <LinearLayout
+            android:id="@+id/buttonContainer"
+            android:layout_width="412dp"
+            android:layout_height="209dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="16dp">
 
-    <!-- Sign In With Google Button -->
-    <Button
-        android:id="@+id/returnToTitleButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:background="@drawable/rounded_button"
-        android:text="назад"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.173"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_goneMarginBottom="20dp" />
+        <!-- Кнопка "Вход" -->
+        <Button
+                android:id="@+id/login"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Вход"
+                android:layout_marginTop="8dp"/>
 
-    <Button
-        android:id="@+id/signInWithGoogle"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        android:background="@drawable/rounded_button"
-        android:text="Google"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.873"
-        app:layout_constraintStart_toStartOf="parent" />
+        <!-- Кнопка "Назад" -->
+        <Button
+                android:id="@+id/returnToTitleButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Назад"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"/>
 
+        <!-- Кнопка "Google" -->
+        <Button
+                android:id="@+id/signInWithGoogle"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Google"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

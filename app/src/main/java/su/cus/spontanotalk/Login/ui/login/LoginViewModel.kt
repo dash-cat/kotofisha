@@ -22,23 +22,6 @@ class LoginViewModel(
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    private val _isSignInButtonEnabled = MutableLiveData<Boolean>()
-    val isSignInButtonEnabled: LiveData<Boolean> = _isSignInButtonEnabled
-
-    fun setSignInButtonClickListener(listener: SignInButtonClickListener) {
-        _signInButtonClickListener = listener
-    }
-
-    private lateinit var _signInButtonClickListener: SignInButtonClickListener
-
-    interface SignInButtonClickListener {
-        fun onSignInButtonClick()
-    }
-
-    fun signIn() {
-        _signInButtonClickListener.onSignInButtonClick()
-    }
-
     fun login(username: String, password: String) {
         viewModelScope.launch {
             // can be launched in a separate asynchronous job

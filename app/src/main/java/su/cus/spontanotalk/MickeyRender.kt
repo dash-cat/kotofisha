@@ -20,13 +20,12 @@ class MickeyRender : GLSurfaceView.Renderer {
         1f, 1f, 0f   // top right
     )
 
-    private val vertexBuffer: FloatBuffer
+    private val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(vertices.size * 4)
+        .order(ByteOrder.nativeOrder())
+        .asFloatBuffer()
+        .put(vertices)
 
     init {
-        vertexBuffer = ByteBuffer.allocateDirect(vertices.size * 4)
-            .order(ByteOrder.nativeOrder())
-            .asFloatBuffer()
-            .put(vertices)
         vertexBuffer.position(0)
     }
 

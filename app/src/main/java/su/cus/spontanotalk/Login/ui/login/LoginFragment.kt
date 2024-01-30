@@ -25,8 +25,9 @@ import su.cus.spontanotalk.databinding.FragmentLoginBinding
 class LoginFragment : Fragment() {
 
     private val loginViewModel: LoginViewModel by lazy {
-        ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
+        ViewModelProvider(this)[LoginViewModel::class.java]
     }
+
     private var _binding: FragmentLoginBinding? = null
     private lateinit var glSurfaceView: GLSurfaceView
     private val signUpOpener: ISignUpOpener by inject()

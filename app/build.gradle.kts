@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.firebaseCrashlyticsGradle)
     alias(libs.plugins.perfPlaginFirebase)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
@@ -60,6 +61,7 @@ android {
 }
 
 dependencies {
+//    implementation(libs.kotlinxSerialization)
     implementation(libs.firebase.play.services.location)
     implementation(libs.firebase.ui.firestore)
     implementation(libs.firebase.ui.storage)

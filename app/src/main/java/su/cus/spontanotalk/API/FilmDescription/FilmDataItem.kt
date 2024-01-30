@@ -4,8 +4,9 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
-@Serializable
+
 @Parcelize
+@Serializable
 data class FilmDataItem(
  val completed: Boolean?,
  val countries: List<Country>?,

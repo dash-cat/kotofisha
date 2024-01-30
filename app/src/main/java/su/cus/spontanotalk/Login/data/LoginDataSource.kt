@@ -6,7 +6,7 @@ import kotlinx.coroutines.tasks.await
 import su.cus.spontanotalk.Login.data.model.LoggedInUser
 import java.io.IOException
 
-class LoginDataSource {
+class LoginDataSource(context: Any?) {
 
     private val firebaseAuth: FirebaseAuth by lazy {
         Firebase.auth

@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.androidxNavigation)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.appDistribution)
@@ -70,7 +69,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.boom))
     implementation(libs.facebook)
-
+    implementation(libs.g.jetbrains.kotlinx)
     implementation(libs.firebase)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)

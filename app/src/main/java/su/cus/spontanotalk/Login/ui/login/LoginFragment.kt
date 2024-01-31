@@ -1,12 +1,10 @@
 package su.cus.spontanotalk.Login.ui.login
 
-import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.koin.android.ext.android.inject
 import su.cus.spontanotalk.ISignUpOpener
 import su.cus.spontanotalk.R
-import su.cus.spontanotalk.StarrySkyRenderer
 import su.cus.spontanotalk.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -27,13 +24,14 @@ class LoginFragment : Fragment() {
     }
 
     private var _binding: FragmentLoginBinding? = null
-    private lateinit var glSurfaceView: GLSurfaceView
+//    private lateinit var glSurfaceView: GLSurfaceView
     private val signUpOpener: ISignUpOpener by inject()
     private lateinit var googleSignInClient: GoogleSignInClient
     private val binding get() = _binding!!
     companion object {
         private const val RC_SIGN_IN = 123
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,29 +41,35 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_loginFragment_to_titleFragment)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-        initViews()
+//        Log.d("LoginFragment", "onViewCreated")
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                Log.d("LoginFragment", "Back pressed in LoginFragment")
+//                findNavController().navigate(R.id.action_loginFragment_to_titleFragment)
+//            }
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//        initViews()
         initListeners()
         initGoogleSignInClient()
     }
+
     private fun initGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
     }
-    private fun initViews() {
-        glSurfaceView = binding.glSurfaceView
-        glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
-        glSurfaceView.setRenderer(StarrySkyRenderer())
-    }
+
+//    private fun initViews() {
+//        glSurfaceView = binding.glSurfaceView
+//        glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
+//        glSurfaceView.setRenderer(StarrySkyRenderer())
+//    }
 
     private fun initListeners() {
         binding.apply {
@@ -76,6 +80,7 @@ class LoginFragment : Fragment() {
             signInWithGoogle.setOnClickListener { signUpOpener.openSignUp() }
         }
     }
+
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -87,8 +92,6 @@ class LoginFragment : Fragment() {
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
-
-
     private fun showLoginFailed(@StringRes errorString: Int) {
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
@@ -98,6 +101,4 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

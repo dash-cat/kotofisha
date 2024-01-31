@@ -1,9 +1,9 @@
 <resources>
-    <!--    <resources>-->
-    <!--        &lt;!&ndash; Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). &ndash;&gt;-->
-    <!--        <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>-->
-    <!--        <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>-->
-    <!--    </resources>-->
+        <resources>
+            <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+            <string name="facebook_application_id" translatable="false">YOUR_APP_ID</string>
+            <string name="facebook_login_protocol_scheme" translatable="false">fbYOUR_APP_ID</string>
+        </resources>
     <string name="cats_back">cats_back</string>
     <string name="go_to_come">Афиша</string>
     <string name="welcome">Добро пожаловать</string>

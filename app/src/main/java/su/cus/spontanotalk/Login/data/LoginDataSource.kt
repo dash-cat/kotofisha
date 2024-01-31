@@ -6,15 +6,14 @@ import kotlinx.coroutines.tasks.await
 import su.cus.spontanotalk.Login.data.model.LoggedInUser
 import java.io.IOException
 
-class LoginDataSource(context: Any?) {
+class LoginDataSource {
 
     private val firebaseAuth: FirebaseAuth by lazy {
         Firebase.auth
     }
 
     suspend fun login(email: String, password: String): Result<LoggedInUser> {
-        val result: Result<LoggedInUser> = try {
-            // Firebase authentication logic
+        return try {
             val task = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val user = task.user
             if (user != null) {
@@ -25,10 +24,10 @@ class LoginDataSource(context: Any?) {
         } catch (e: Exception) {
             Result.Error(IOException("Error logging in", e))
         }
-        return result
     }
 
     fun logout() {
         firebaseAuth.signOut()
     }
 }
+

@@ -59,6 +59,7 @@ class TitleScreen : Fragment() {
             binding.loginButton.text = "Вход"
         }
     }
+
     private fun showSignOutConfirmationDialog() {
         AlertDialog.Builder(context)
             .setTitle("Подтверждение выхода")

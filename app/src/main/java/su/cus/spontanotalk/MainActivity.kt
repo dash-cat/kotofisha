@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -12,8 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 interface NavigationController {
-
-
     fun openPremiereList()
 
 }
@@ -38,15 +38,22 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val id = R.id.nav_host_fragment
 
-//        val fragment = supportFragmentManager.findFragmentById(id) as? NavHostFragment
+        // Инициализация NavController
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar()?.setTitle("Your Custom Title");
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Навигация назад с использованием NavController
+                navController.navigateUp()
+                Log.d("MyActivity", "Back button pressed")
+                println("Worked")
+                finish()
+            }
         }
 
-//            fragment?.navController?.navigate(R.id.action_to_titleScreen)
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun openSignUp() {
@@ -65,13 +72,14 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .build(),
-            MainActivity.RC_SIGN_IN
+            RC_SIGN_IN
         )
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == MainActivity.RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
@@ -95,9 +103,6 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
 
     override fun openPremiereList() {
 
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.fragment_container, fragment)
-//            .commit()
     }
 
 

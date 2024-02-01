@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,6 +21,12 @@ class LoginFragment : Fragment() {
     private val loginViewModel: LoginViewModel by lazy {
         ViewModelProvider(this)[LoginViewModel::class.java]
     }
+
+    var onLoading: (() -> Unit)? = null
+    var onSuccess: ((String) -> Unit)? = null
+    var onError: ((Throwable) -> Unit)? = null
+
+
 
     private var _binding: FragmentLoginBinding? = null
 //    private lateinit var glSurfaceView: GLSurfaceView
@@ -58,6 +63,29 @@ class LoginFragment : Fragment() {
         initGoogleSignInClient()
     }
 
+
+
+    private fun setupViewModel() {
+        loginViewModel.onLoading = {
+            // Показать индикатор загрузки, например ProgressBar
+        }
+
+        loginViewModel.onSuccess = { data ->
+            // Обновить интерфейс данными, например, TextView или RecyclerView
+        }
+
+        loginViewModel.onError = { error ->
+            // Показать сообщение об ошибке, например, через Toast или Snackbar
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Очищаем замыкания, чтобы избежать утечек памяти
+        loginViewModel.onLoading = null
+        loginViewModel.onSuccess = null
+        loginViewModel.onError = null
+    }
     private fun initGoogleSignInClient() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
@@ -70,6 +98,7 @@ class LoginFragment : Fragment() {
 //        glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
 //        glSurfaceView.setRenderer(StarrySkyRenderer())
 //    }
+
 
     private fun initListeners() {
         binding.apply {
@@ -92,13 +121,4 @@ class LoginFragment : Fragment() {
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

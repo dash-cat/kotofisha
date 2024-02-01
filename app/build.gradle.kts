@@ -70,7 +70,7 @@ dependencies {
     implementation(libs.firebase.perf)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.boom))
-    implementation(libs.facebook)
+//    implementation(libs.facebook)
     implementation(libs.g.jetbrains.kotlinx)
     implementation(libs.firebase)
     implementation(libs.androidx.legacy.support.v4)

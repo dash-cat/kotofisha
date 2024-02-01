@@ -90,7 +90,7 @@ mokito = { group = "org.mockito", name = "mockito-android", version.ref = "mokit
 android-test = { group = "androidx.test", name = "core", version.ref = "androidTest"}
 mokito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mokitoKotlin"}
 firebase = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase"}
-facebook = { group = "com.facebook.android", name = "facebook-android-sdk", version.ref = "facebook"}
+#facebook = { group = "com.facebook.android", name = "facebook-android-sdk", version.ref = "facebook"}
 firebase-boom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBoom"}
 firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalitic"}
 #firebase-storage = {group = "com.google.firebase", name = "firebase-storage", version.ref = "firebase"}

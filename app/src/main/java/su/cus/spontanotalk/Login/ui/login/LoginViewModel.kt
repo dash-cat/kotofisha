@@ -1,30 +1,26 @@
 package su.cus.spontanotalk.Login.ui.login
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import su.cus.spontanotalk.Login.data.LoginDataSource
-import  su.cus.spontanotalk.Login.data.Result
+
 class LoginViewModel : ViewModel() {
 
     private val loginDataSource = LoginDataSource()
 
-    fun login(email: String, password: String) {
-        viewModelScope.launch {
-            val result = loginDataSource.login(email, password)
-            when (result) {
-                is Result.Success -> {
-                    println(">Отправить на другой фрагмент")
-                }
-                is Result.Error -> {
-                    throw Error("Не удалось авторизоваться")
-                }
-            }
+    var onLoading: (() -> Unit)? = null
+    var onSuccess: ((String) -> Unit)? = null
+    var onError: ((Throwable) -> Unit)? = null
+
+    fun getPicture() {
+        onLoading?.invoke()
+        // Здесь код для загрузки данных
+        try {
+            val data = "Loaded Data"
+            onSuccess?.invoke(data)
+        } catch (e: Throwable) {
+            onError?.invoke(e)
         }
     }
 
 
-    fun logout() {
-        loginDataSource.logout()
-    }
 }

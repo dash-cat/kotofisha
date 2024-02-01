@@ -1,35 +1,41 @@
 package su.cus.spontanotalk.Login.ui.login
 
-import android.opengl.GLSurfaceView
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import su.cus.spontanotalk.ISignUpOpener
 import su.cus.spontanotalk.R
-import su.cus.spontanotalk.StarrySkyRenderer
 import su.cus.spontanotalk.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
-    private lateinit var loginViewModel: LoginViewModel
-    private var _binding: FragmentLoginBinding? = null
-    private lateinit var glSurfaceView: GLSurfaceView
-    private var gso: GoogleSignInOptions? = null
+    private val loginViewModel: LoginViewModel by lazy {
+        ViewModelProvider(this)[LoginViewModel::class.java]
+    }
 
+    var onLoading: (() -> Unit)? = null
+    var onSuccess: ((String) -> Unit)? = null
+    var onError: ((Throwable) -> Unit)? = null
+
+
+
+    private var _binding: FragmentLoginBinding? = null
+//    private lateinit var glSurfaceView: GLSurfaceView
+    private val signUpOpener: ISignUpOpener by inject()
+    private lateinit var googleSignInClient: GoogleSignInClient
     private val binding get() = _binding!!
+    companion object {
+        private const val RC_SIGN_IN = 123
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,106 +46,71 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+//        Log.d("LoginFragment", "onViewCreated")
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                Log.d("LoginFragment", "Back pressed in LoginFragment")
+//                findNavController().navigate(R.id.action_loginFragment_to_titleFragment)
+//            }
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//        initViews()
         initListeners()
-        initObservers()
+        initGoogleSignInClient()
     }
 
-    private fun initViews() {
-        glSurfaceView = binding.glSurfaceView
-        glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
-        glSurfaceView.setRenderer(StarrySkyRenderer())
+
+
+    private fun setupViewModel() {
+        loginViewModel.onLoading = {
+            // Показать индикатор загрузки, например ProgressBar
+        }
+
+        loginViewModel.onSuccess = { data ->
+            // Обновить интерфейс данными, например, TextView или RecyclerView
+        }
+
+        loginViewModel.onError = { error ->
+            // Показать сообщение об ошибке, например, через Toast или Snackbar
+        }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Очищаем замыкания, чтобы избежать утечек памяти
+        loginViewModel.onLoading = null
+        loginViewModel.onSuccess = null
+        loginViewModel.onError = null
+    }
+    private fun initGoogleSignInClient() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    }
+
+//    private fun initViews() {
+//        glSurfaceView = binding.glSurfaceView
+//        glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
+//        glSurfaceView.setRenderer(StarrySkyRenderer())
+//    }
+
 
     private fun initListeners() {
-        binding.returnToTitleButton.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_titleScreen)
-        }
-
-        binding.login.setOnClickListener {
-            login()
-        }
-
-        binding.password.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                login()
+        binding.apply {
+            returnToTitleButton.setOnClickListener {
+                findNavController().navigate(R.id.action_loginFragment_to_titleFragment)
             }
-            false
-        }
-
-        val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                loginViewModel.loginDataChanged(
-                    binding.username.text.toString(),
-                    binding.password.text.toString()
-                )
-            }
-        }
-        binding.username.addTextChangedListener(afterTextChangedListener)
-        binding.password.addTextChangedListener(afterTextChangedListener)
-    }
-
-    private fun initObservers() {
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())[LoginViewModel::class.java]
-
-        loginViewModel.isSignInButtonEnabled.observe(viewLifecycleOwner) { isSignInButtonEnabled ->
-            if (isSignInButtonEnabled) {
-                signIn()
-            }
-        }
-
-        loginViewModel.loginFormState.observe(viewLifecycleOwner) { loginFormState ->
-            loginFormState ?: return@observe
-            binding.login.isEnabled = loginFormState.isDataValid
-            loginFormState.usernameError?.let {
-                binding.username.error = getString(it)
-            }
-            loginFormState.passwordError?.let {
-                binding.password.error = getString(it)
-            }
-        }
-
-        loginViewModel.loginResult.observe(viewLifecycleOwner) { loginResult ->
-            loginResult ?: return@observe
-            binding.loading.visibility = View.GONE
-            loginResult.error?.let {
-                showLoginFailed(it)
-            }
-            loginResult.success?.let {
-                updateUiWithUser(it)
-            }
-        }
-    }
-
-    private fun login() {
-        binding.loading.visibility = View.VISIBLE
-        lifecycleScope.launch {
-            loginViewModel.login(
-                binding.username.text.toString(),
-                binding.password.text.toString()
-            )
+            login.setOnClickListener { signIn() }
+            signInWithGoogle.setOnClickListener { signUpOpener.openSignUp() }
         }
     }
 
     private fun signIn() {
-        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
-
-        val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(
-            requireActivity(),
-            gso!!
-        )
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -150,27 +121,4 @@ class LoginFragment : Fragment() {
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        glSurfaceView.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        glSurfaceView.onPause()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    companion object {
-        private const val RC_SIGN_IN = 123
-    }
 }

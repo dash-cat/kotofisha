@@ -13,8 +13,7 @@ class LoginDataSource {
     }
 
     suspend fun login(email: String, password: String): Result<LoggedInUser> {
-        val result: Result<LoggedInUser> = try {
-            // Firebase authentication logic
+        return try {
             val task = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val user = task.user
             if (user != null) {
@@ -25,10 +24,10 @@ class LoginDataSource {
         } catch (e: Exception) {
             Result.Error(IOException("Error logging in", e))
         }
-        return result
     }
 
     fun logout() {
         firebaseAuth.signOut()
     }
 }
+

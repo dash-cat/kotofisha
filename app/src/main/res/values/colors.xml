@@ -16,4 +16,16 @@
     <color name="color1">#FF5733</color>         <!-- Custom color 1 -->
     <color name="color2">#FFC300</color>         <!-- Custom color 2 -->
     <color name="color3">#4CAF50</color>
+    <color name="windowBackgroundColor">#FFFFFF</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#757575</color>
+    <color name="darkGray">#A9A9A9</color>
+    <color name="windowBackgroundColorDark">#000000</color>
+    <color name="lightPrimary">#FFFFFF</color>
+    <color name="lightPrimaryDark">#EEEEEE</color>
+    <color name="lightAccent">#FF4081</color>
+    <color name="buttonTextColor">#FFFFFF</color>
+    <color name="buttonBackgroundColor">#3F51B5</color>
+    <color name="textColor">#000000</color>
+    <color name="textColorHint">#757575</color>
 </resources>

@@ -1,13 +1,13 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.androidxNavigation)
     alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.appDistribution)
     alias(libs.plugins.firebaseCrashlyticsGradle)
     alias(libs.plugins.perfPlaginFirebase)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
@@ -61,17 +61,23 @@ android {
 }
 
 dependencies {
+//    implementation(libs.kotlinxSerialization)
     implementation(libs.firebase.play.services.location)
     implementation(libs.firebase.ui.firestore)
     implementation(libs.firebase.ui.storage)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.ui.database)
-//    implementation(libs.firebase.storage)
+    implementation(libs.firebase.perf)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.boom))
-    implementation(libs.facebook)
-
+//    implementation(libs.facebook)
+    implementation(libs.g.jetbrains.kotlinx)
     implementation(libs.firebase)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.core.animation)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.media3.common)
     androidTestImplementation(libs.mokito.kotlin)
     androidTestImplementation(libs.android.test)
     androidTestImplementation(libs.mokito)

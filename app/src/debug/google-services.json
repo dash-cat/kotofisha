@@ -12,7 +12,20 @@
           "package_name": "su.cus.spontanotalk"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "49842161563-2hkrr21it0di2ir6g11bup78ofnei60v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "su.cus.spontanotalk",
+            "certificate_hash": "c4bdcf733945a7564cc3560ce9aed3c90b7f39e2"
+          }
+        },
+        {
+          "client_id": "49842161563-ai57ca4pevk9ra16s9fgp915i6asdsgb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA-cuzOSxEt1-W5_7bRc9TDyU9J0rFWpWA"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49842161563-ai57ca4pevk9ra16s9fgp915i6asdsgb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

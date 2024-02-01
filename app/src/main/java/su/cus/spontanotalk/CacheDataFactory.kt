@@ -1,8 +1,8 @@
 package su.cus.spontanotalk
 
-import su.cus.spontanotalk.API.FilmDescription.FilmDataItem
 import android.content.Context
 import su.cus.spontanotalk.API.CachedData
+import su.cus.spontanotalk.API.FilmDescription.FilmDataItem
 import su.cus.spontanotalk.API.ICachedData
 import su.cus.spontanotalk.API.MoviesRepository.ListPremiere
 

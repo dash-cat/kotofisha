@@ -1,63 +1,32 @@
-package su.cus.spontanotalk
-
+package su.cus.spontanotalk.Login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import su.cus.spontanotalk.databinding.ActivitySignInBinding
 
-
-interface NavigationController {
-    fun openPremiereList()
-
-}
-
-interface ISignUpOpener {
-    fun openSignUp()
-}
-
-class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
+class SignInActivity : AppCompatActivity() {
 
     companion object {
         private const val RC_SIGN_IN = 123
-        var instance: MainActivity? = null
-            private set
     }
 
-    init {
-        instance = this
-    }
+    private lateinit var _binding: ActivitySignInBinding
+
+
+    private val binding get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        _binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(_binding.root)
 
-        // Инициализация NavController
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Навигация назад с использованием NavController
-                navController.navigateUp()
-                Log.d("MyActivity", "Back button pressed")
-                println("Worked")
-                finish()
-            }
-        }
-
-        onBackPressedDispatcher.addCallback(this, callback)
-    }
-
-    override fun openSignUp() {
-        createSignInIntent()
+        // Here you can set up listeners or initialize UI components using the binding
     }
 
     private fun createSignInIntent() {
@@ -100,15 +69,5 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
         }
     }
 
-
-    override fun openPremiereList() {
-
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("su.cus.spontanotalk.Login.MainActivity", "su.cus.spontanotalk.Login.MainActivity view is being destroyed")
-    }
+    // ... Остальная часть вашего кода ...
 }
-

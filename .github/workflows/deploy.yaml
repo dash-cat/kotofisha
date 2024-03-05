@@ -1,0 +1,26 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - main  # Укажите ветку, для которой будет выполняться деплой
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Server
+        run: |
+          ssh -o StrictHostKeyChecking=no username@your-server.com << 'EOF'
+            cd /path/to/your/project
+            git pull origin main
+            # Добавьте команды для перезапуска приложения или другие действия, необходимые для деплоя
+          EOF

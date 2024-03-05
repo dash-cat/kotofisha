@@ -53,9 +53,9 @@ android {
         kotlinCompilerExtensionVersion = "1.5.8"
     }
 
-//    packagingOptions {
-//        resources.excludes.add("META-INF/*")
-//    }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
     buildToolsVersion = "34.0.0"
     ndkVersion = "26.1.10909125"
 
@@ -79,7 +79,7 @@ dependencies {
     implementation(libs.androidx.core.animation)
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.media3.common)
-    testImplementation("org.testng:testng:7.1.0")
+    androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.mokito.kotlin)
     androidTestImplementation(libs.android.test)
     androidTestImplementation(libs.mokito)
@@ -92,7 +92,7 @@ dependencies {
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.org.robolectric)
     androidTestImplementation(libs.androidx.espresso.intents)
-    androidTestImplementation(libs.androidx.ext)
+//    androidTestImplementation(libs.androidx.ext)
     androidTestImplementation(libs.androidx.espresso)
     implementation(libs.koin)
     implementation(libs.glide)

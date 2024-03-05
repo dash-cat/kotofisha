@@ -15,7 +15,10 @@
             android:layout_width="wrap_content"
             android:layout_height="348dp"
             android:clickable="true" android:id="@+id/floatingActionButton"
-            tools:layout_editor_absoluteX="45dp" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="32dp"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/glSurfaceView"
+            app:layout_constraintHorizontal_bias="0.101" app:layout_constraintVertical_bias="0.884"
+            android:contentDescription="@string/action_sign_in"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

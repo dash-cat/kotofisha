@@ -36,6 +36,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -78,6 +79,7 @@ dependencies {
     implementation(libs.androidx.core.animation)
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.media3.common)
+    testImplementation("org.testng:testng:7.1.0")
     androidTestImplementation(libs.mokito.kotlin)
     androidTestImplementation(libs.android.test)
     androidTestImplementation(libs.mokito)

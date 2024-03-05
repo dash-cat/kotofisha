@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
         setContentView(R.layout.activity_main)
 
 
+
+
         // Инициализация NavController
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
@@ -111,4 +113,3 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
         Log.d("su.cus.spontanotalk.Login.MainActivity", "su.cus.spontanotalk.Login.MainActivity view is being destroyed")
     }
 }
-

@@ -7,4 +7,3 @@ plugins {
     alias(libs.plugins.kotlinxSerialization) apply true
 
 }
-

@@ -85,6 +85,7 @@ class TitleScreen : Fragment() {
             // Отображаем карусель с другими кнопками
             buttonCarouselLayout.visibility = View.VISIBLE
 //            findNavController().navigate(R.id.action_titleScreen_to_premiereList)
+//            findNavController().navigate(R.id.action_titleScreen_to_composeFragment)
             findNavController().navigate(R.id.action_titleScreen_to_composeFragment)
         }
 

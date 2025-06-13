@@ -26,13 +26,10 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
 
     companion object {
         private const val RC_SIGN_IN = 123
-        var instance: MainActivity? = null
-            private set
+        // Removed: var instance: MainActivity? = null
     }
 
-    init {
-        instance = this
-    }
+    // Removed: init block that set static instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +42,14 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Навигация назад с использованием NavController
-                navController.navigateUp()
-                Log.d("MyActivity", "Back button pressed")
-                println("Worked")
-                finish()
+                Log.d("MainActivity", "Back button pressed, attempting to navigate up.")
+                // Navigate up with NavController. Only finish if navigateUp() returns false (can't navigate up).
+                if (!navController.navigateUp()) {
+                    Log.d("MainActivity", "Navigated up to the start of the graph, finishing activity.")
+                    finish()
+                } else {
+                    Log.d("MainActivity", "Successfully navigated up.")
+                }
             }
         }
 
@@ -102,7 +102,10 @@ class MainActivity : AppCompatActivity(), NavigationController, ISignUpOpener {
 
 
     override fun openPremiereList() {
-
+        // This is part of NavigationController interface.
+        // If MainActivity is not supposed to handle this, it should be logged or throw an exception.
+        // For now, making it a no-op.
+        Log.d("MainActivity", "openPremiereList called, but no implementation is present.")
     }
 
 

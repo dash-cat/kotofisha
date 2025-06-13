@@ -3,6 +3,8 @@ package su.cus.spontanotalk.API.FilmDescription
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import su.cus.spontanotalk.API.MoviesRepository.Country
+import su.cus.spontanotalk.API.MoviesRepository.Genre
 
 
 @Parcelize

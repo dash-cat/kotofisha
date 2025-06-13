@@ -49,7 +49,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
 
 //    packagingOptions {
@@ -67,12 +67,12 @@ dependencies {
     implementation(libs.firebase.ui.storage)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.ui.database)
-    implementation(libs.firebase.perf)
-    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.perf) // This lib is fine, version controlled by BOM
+    implementation(libs.firebase.analytics) // Corrected alias, version controlled by BOM
     implementation(platform(libs.firebase.boom))
 //    implementation(libs.facebook)
-    implementation(libs.g.jetbrains.kotlinx)
-    implementation(libs.firebase)
+    implementation(libs.kotlinx.serialization.json) // Updated alias
+    implementation(libs.firebase.auth) // Corrected alias, version controlled by BOM
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.animation)
@@ -85,8 +85,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.annotation)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata) // Changed from .livedata.ktx
+    implementation(libs.androidx.lifecycle.viewmodel) // Changed from .viewmodel.ktx
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.org.robolectric)
     androidTestImplementation(libs.androidx.espresso.intents)
@@ -98,12 +98,12 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     annotationProcessor(libs.glideCompiler)
-    implementation(libs.g.jetbrains.kotlinx)
+    implementation(libs.kotlinx.serialization.json) // Updated alias
     implementation(libs.androidx.retrofit)
     implementation(libs.androidx.converter.gson)
     implementation(libs.androidx.recycler)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime) // Changed from .runtime.ktx
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

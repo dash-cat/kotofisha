@@ -22,47 +22,66 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 
 class HomeFragment : Fragment() {
-    private lateinit var glSurfaceView: GLSurfaceView
-    private var rendererSet = false
+    // Removed lateinit var glSurfaceView and rendererSet
+
+    // Companion object can be removed if newInstance() is not used elsewhere.
+    // For now, let's assume it might be, or remove it if confirmed unused later.
     companion object {
         fun newInstance() = HomeFragment()
     }
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels() // ViewModel is currently empty
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       val composeView = ComposeView(requireContext()).apply {
-           setContent { GLSurfaceComposeLayout() }
+       return ComposeView(requireContext()).apply {
+           setContent { GLSurfaceComposeLayoutWithLifecycle() } // Changed to new Composable
        }
-
-        return composeView
     }
+
     @Preview
     @Composable
-    fun GLSurfaceComposeLayout() {
-        // Context для создания GLSurfaceView
+    fun GLSurfaceComposeLayoutWithLifecycle() {
         val context = LocalContext.current
+        val lifecycleOwner = LocalLifecycleOwner.current
 
-        // Создание GLSurfaceView
-        val glSurfaceView = remember {
+        // Create and remember GLSurfaceView
+        val glSurfaceViewInstance = remember {
             GLSurfaceView(context).apply {
-                glSurfaceView.setEGLContextClientVersion(2) // Use OpenGL ES 2.0
-                glSurfaceView.setRenderer(HomeRender())
-                rendererSet = true
+                setEGLContextClientVersion(2) // Use OpenGL ES 2.0
+                setRenderer(HomeRender()) // Assuming HomeRender is a valid Renderer
+                // renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY // Optional: manage render mode
+            }
+        }
+
+        // Manage GLSurfaceView lifecycle using DisposableEffect
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                when (event) {
+                    Lifecycle.Event.ON_RESUME -> glSurfaceViewInstance.onResume()
+                    Lifecycle.Event.ON_PAUSE -> glSurfaceViewInstance.onPause()
+                    else -> {} // Do nothing for other events
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+                // glSurfaceViewInstance.queueEvent { glSurfaceViewInstance.destroyDrawingCache() } // Example cleanup
             }
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // GLSurfaceView в качестве фонового слоя
-            AndroidView(factory = { glSurfaceView }, modifier = Modifier.matchParentSize())
-
-            // Поверх GLSurfaceView можно размещать другие Compose компоненты
+            AndroidView(factory = { glSurfaceViewInstance }, modifier = Modifier.matchParentSize())
             AnimatedContent()
         }
     }
@@ -70,15 +89,14 @@ class HomeFragment : Fragment() {
     @Preview
     @Composable
     fun AnimatedContent() {
-        // Анимация перемещения
-        val infiniteTransition = rememberInfiniteTransition(label = "")
+        val infiniteTransition = rememberInfiniteTransition(label = "animTransition") // Added label
         val position by infiniteTransition.animateFloat(
             initialValue = 0f,
-            targetValue = 300f,
+            targetValue = 100f, // Reduced target value for potentially smoother preview
             animationSpec = infiniteRepeatable(
-                animation = tween(1000, easing = LinearEasing),
+                animation = tween(2000, easing = LinearEasing), // Increased duration
                 repeatMode = RepeatMode.Reverse
-            ), label = ""
+            ), label = "position" // Added label
         )
 
         Column(
@@ -87,32 +105,18 @@ class HomeFragment : Fragment() {
             modifier = Modifier.fillMaxSize()
         ) {
             Button(
-                onClick = { /* Обработка нажатия */ },
+                onClick = { /* TODO: Handle click */ },
                 modifier = Modifier
                     .padding(16.dp)
                     .graphicsLayer {
                         translationY = position
                     }
             ) {
-                Text("Кнопка с Анимацией")
+                Text("Кнопка с Анимацией") // Animation Button
             }
         }
     }
-    private fun initViews() {
 
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (rendererSet) {
-            glSurfaceView.onPause()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (rendererSet) {
-            glSurfaceView.onResume()
-        }
-    }
+    // Removed initViews() as it was empty.
+    // Removed Fragment's onPause/onResume as lifecycle is handled by DisposableEffect for the GLSurfaceView.
 }

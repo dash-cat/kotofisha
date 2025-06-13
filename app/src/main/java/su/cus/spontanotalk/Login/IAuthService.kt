@@ -1,6 +1,7 @@
 package su.cus.spontanotalk.Login
 
-import com.google.firebase.auth.FirebaseUser
+// FirebaseUser import might not be needed here anymore if IUser doesn't expose it directly
+// import com.google.firebase.auth.FirebaseUser
 
 interface IAuthService {
     suspend fun signUp(email: String, password: String): IUser
@@ -8,12 +9,4 @@ interface IAuthService {
     fun signOut()
 }
 
-class FirebaseUserWrapper( // XXX move
-    val firebaseUser: FirebaseUser
-): IUser {
-
-}
-
-interface IUser { // XXX move
-
-}
+// FirebaseUserWrapper and IUser are now in their own files.
